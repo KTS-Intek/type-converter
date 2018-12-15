@@ -151,5 +151,4 @@ QVariantHash ConvertAtype::arrHash2varHash(const QHash<QString, QByteArray> &h)
     return s;
 }
 
-
 //-------------------------------------------------------------------------------

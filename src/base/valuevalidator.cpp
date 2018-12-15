@@ -51,3 +51,26 @@ QString ValueValidator::validTableCode(const quint8 &code)
     codeStr = codeStr.rightJustified(3, '0');
     return codeStr;
 }
+
+quint32 ValueValidator::validateIntegerRange(const QString &key, const QVariantMap &map, const QVariantMap &defValues, const quint32 &min, const quint32 &max)
+{
+    bool ok;
+    const quint32 value = map.value(key).toUInt(&ok);
+    if(!ok || !map.contains(key))
+        return defValues.value(key).toUInt();
+
+    if(value < min)
+        return min;
+    if(value > max)
+        return max;
+    return value;
+}
+
+bool ValueValidator::validateBoolValue(const QString &key, const QVariantMap &map, const QVariantMap &defValues)
+{
+    const bool value = map.value(key).toBool();
+    if(!map.contains(key))
+        return defValues.value(key).toBool();
+
+    return value;
+}

@@ -3,6 +3,7 @@
 
 #include <QStringList>
 #include <QDateTime>
+#include <QVariantMap>
 
 class ValueValidator
 {
@@ -22,6 +23,10 @@ public:
     static QString validTableCode(const quint8 &code);
 
 
+
+    static quint32 validateIntegerRange(const QString &key, const QVariantMap &map, const QVariantMap &defValues, const quint32 &min, const quint32 &max);
+
+    static bool validateBoolValue(const QString &key, const QVariantMap &map, const QVariantMap &defValues);
 
 };
 
