@@ -24,6 +24,27 @@ public:
 
     static QDateTime getDateTime4poll(const QDateTime &dtPoll, const quint8 &pollCode);
 
+
+    static QString prettyNumber(const qreal &val, int mPrec) ;
+
+     static QString prettyNumber(const qreal &val, int mPrec, const int &maxPlgPrec) ;
+
+     static QString prettyLongNumber(const QString &s) ;
+
+     static QString prettyLongNumber(const int &v) ;
+
+     static QString prettyBabloNumber(const QString &s) ;
+
+
+     static QString prettyHexDump(const QList<quint8> &list, const quint8 &command);
+
+     static QString prettyHexDump(const QByteArray &messArrH, const QByteArray &commandH, const quint8 &errCode);
+
+     static QString prettyHexDump(QByteArray arr);
+
+     static  void removeLineFromList(const QString &lPartOfline, QStringList &l);
+
+     static  QStringList replaceLineFromList(const QString &lPartOfline, QStringList l, const QString &rPartOfLine);
 };
 
 #endif // PRETTYVALUES_H

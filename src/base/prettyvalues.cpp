@@ -2,6 +2,7 @@
 #include "definedpollcodes.h"
 #include <QDate>
 #include <QTime>
+#include "matildalimits.h"
 
 //------------------------------------------------------------------------------------
 
@@ -100,4 +101,196 @@ QDateTime PrettyValues::getDateTime4poll(const QDateTime &dtPoll, const quint8 &
 
 }
 
-//------------------------------------------------------------------------------------
+
+//--------------------------------------------------------------
+
+QString PrettyValues::prettyNumber(const qreal &val, int mPrec)
+{
+    return prettyNumber(val, mPrec, MAX_PRECISION);
+}
+
+//--------------------------------------------------------------
+
+QString PrettyValues::prettyNumber(const qreal &val, int mPrec, const int &maxPlgPrec)
+{
+//    if(mPrec < 1 || mPrec > maxPlgPrec)
+//        return "";
+
+//    QString s = QString::number(val, 'f', mPrec);
+//    s = s.replace(",", ".");
+//    if(s.isEmpty())
+//        return s;
+//    while(s.right(1) == "0")
+//        s.chop(1);
+
+
+//    if(s == "0." || s.isEmpty())
+//        return "0";
+
+//    if(s.right(1) == ".")
+//        s.append("0");
+
+//    return s;
+
+
+    mPrec = qMin(qMax(mPrec, 1), maxPlgPrec);
+
+    QString s = QString::number(val, 'f', mPrec);
+    s = s.replace(",", ".");
+    if(s.isEmpty())
+        return s;
+    while(s.right(1) == "0")
+        s.chop(1);
+
+    if(s.right(1) == ".")
+        s.chop(1);
+
+    if(s == "0." || s.isEmpty())
+        return "0";
+
+    return s;
+}
+
+//--------------------------------------------------------------
+
+QString PrettyValues::prettyLongNumber(const QString &s)
+{
+    bool ok;
+    int val = s.toInt(&ok);
+
+    return ok ? prettyLongNumber(val) : s;
+}
+
+//--------------------------------------------------------------
+
+QString PrettyValues::prettyLongNumber(const int &v)
+{
+    QString ss = QString::number(v);
+    QStringList l;
+    for(int i = 0, iMax = ss.length(); i < iMax; i += 3){
+        l.prepend(ss.right(3));
+        ss.chop(3);
+    }
+    if(!ss.isEmpty())
+        l.prepend(ss);
+    return l.join(" ");
+}
+
+//--------------------------------------------------------------
+
+QString PrettyValues::prettyBabloNumber(const QString &s)
+{
+    bool ok;
+    s.toDouble(&ok);
+    QString r = s;
+    if(ok){
+        r.clear();
+        QString ss = s;
+        int chopSize = 3;
+        if(ss.contains("."))
+            chopSize += ss.length() - ss.indexOf(".") ;
+        else if(ss.contains(","))
+            chopSize += ss.length() - ss.indexOf(",") ;
+
+        QStringList l;
+        for(int i = 0, iMax = ss.length(); i < iMax; i += chopSize, chopSize = 3){
+            l.prepend(ss.right(chopSize));
+            ss.chop(chopSize);
+        }
+        if(!ss.isEmpty())
+            l.prepend(ss);
+        r = l.join(" ");
+    }
+    return r;
+}
+
+QString PrettyValues::prettyHexDump(const QList<quint8> &list, const quint8 &command)
+{
+    QByteArray arr;
+    for(int i = 0, iMax = list.size(); i < iMax; i++)
+        arr.append(list.at(i));
+    arr = arr.toHex();
+    QString str;
+    for(int i = 0, iMax = arr.size(); i < iMax; i += 2)
+        str.append(arr.mid(i,2) + " ");
+
+    if(!str.isEmpty())
+        str.chop(1);
+//    if(str.isEmpty())
+//        return "";
+
+    if(!str.isEmpty())
+        str.prepend(", D:");
+
+    str.prepend(", C:" + QString::number(command, 16).toUpper());
+    return  str.toUpper();
+}
+
+QString PrettyValues::prettyHexDump(const QByteArray &messArrH, const QByteArray &commandH, const quint8 &errCode)
+{
+    QByteArray arr(messArrH);
+
+    QString str;
+    for(int i = 0, iMax = arr.size(); i < iMax; i += 2)
+        str.append(arr.mid(i,2) + " ");
+
+    if(!str.isEmpty())
+        str.chop(1);
+
+
+    if(!str.isEmpty())
+        str.prepend(", D:");
+
+    if(!commandH.isEmpty()){
+        str.prepend(", C:" + commandH.toUpper());
+        str.append(", E:" + QString::number(errCode, 16).toUpper());
+    }
+    return  str.toUpper();
+}
+
+//--------------------------------------------------------------
+
+QString PrettyValues::prettyHexDump(QByteArray arr)
+{
+    arr = arr.toHex();
+    QString str;
+    for(int i = 0, iMax = arr.size(); i < iMax; i += 2)
+        str.append(arr.mid(i,2) + " ");
+
+    if(!str.isEmpty())
+        str.chop(1);
+    if(str.isEmpty())
+        return "";
+    str.prepend(", D:");
+
+    return  str.toUpper();
+}
+
+//--------------------------------------------------------------
+
+void PrettyValues::removeLineFromList(const QString &lPartOfline, QStringList &l)
+{
+    for(int i = 0, iMax = l.size(), left = lPartOfline.size(); i < iMax; i++){
+        if(l.at(i).left(left) == lPartOfline){
+            l.removeAt(i);
+            i--;
+            iMax--;
+        }
+    }
+}
+
+//--------------------------------------------------------------
+
+QStringList PrettyValues::replaceLineFromList(const QString &lPartOfline, QStringList l, const QString &rPartOfLine)
+{
+    for(int i = 0, iMax = l.size(), left = lPartOfline.size(); i < iMax; i++){
+        if(l.at(i).left(left) == lPartOfline){
+            l.replace(i, lPartOfline + rPartOfLine);
+            return l;
+        }
+    }
+    l.append(lPartOfline + rPartOfLine);
+    return l;
+}
+
+//--------------------------------------------------------------
