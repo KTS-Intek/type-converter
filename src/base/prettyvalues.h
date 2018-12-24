@@ -8,6 +8,10 @@ class PrettyValues
 {
 
 public:
+    static QString getBuildDateStr() ;
+
+    static QDateTime getBuildDate();
+
 
     static QString prettyTimeValue(QString &f, qint64 mynulo);
 

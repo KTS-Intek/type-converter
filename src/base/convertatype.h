@@ -146,6 +146,10 @@ public:
 
     static QByteArray hexArrFromNumber(const int &inVal, const int &byteCount, const int base = 10);
 
+
+    //DbgAboutSourceType
+    static QString varHash2str(const QVariantHash &h, const bool ignoreEmpty = true);
+
 };
 
 #endif // CONVERTATYPE_H

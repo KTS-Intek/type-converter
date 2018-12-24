@@ -820,3 +820,18 @@ QByteArray ConvertAtype::hexArrFromNumber(const int &inVal, const int &byteCount
 }
 
 //-------------------------------------------------------------------------------
+
+QString ConvertAtype::varHash2str(const QVariantHash &h, const bool ignoreEmpty)
+{
+    QList<QString> lk = h.keys();
+    std::sort(lk.begin(), lk.end());
+    QStringList l;
+    for(int i = 0, iMax = lk.size(); i < iMax; i++){
+        if(ignoreEmpty && h.value(lk.at(i)).toString().isEmpty())
+            continue;
+        l.append(QString("%1=%2").arg(lk.at(i)).arg(h.value(lk.at(i)).toString()));
+    }
+    return l.join("\n");
+}
+
+//-------------------------------------------------------------------------------

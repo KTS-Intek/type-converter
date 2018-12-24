@@ -6,6 +6,21 @@
 
 //------------------------------------------------------------------------------------
 
+QString PrettyValues::getBuildDateStr()
+{
+    return QString::fromLocal8Bit(BUILDDATE) + " " + QString::fromLocal8Bit(BUILDTIME);
+}
+
+//------------------------------------------------------------------------------------
+
+QDateTime PrettyValues::getBuildDate()
+{
+    const QDateTime dt = QDateTime::fromString(getBuildDateStr(), "yyyy-MM-dd hh:mm:ss");
+    return dt.isValid() ? dt : QDateTime(QDate(2017,1,1), QTime(0,0,0,0));
+}
+
+//------------------------------------------------------------------------------------
+
 QString PrettyValues::prettyTimeValue(QString &f, qint64 mynulo)
 {
 
@@ -80,7 +95,11 @@ QString PrettyValues::getTableName4poll(const QDateTime &dtPoll, const quint8 &p
     case POLL_CODE_READ_POWER           :
     case POLL_CODE_READ_VOLTAGE         :
     case POLL_CODE_READ_TOTAL           : tableName = dtPoll.toUTC().toString("yyyy_MM_dd_hh_mm"); break;
-    default: tableName.clear(); break;
+    default:{
+        tableName = dtPoll.toUTC().toString("yyyy_MM_dd_hh_mm");
+//        tableName.clear();
+        break;}
+
     }
     return tableName;
 }
