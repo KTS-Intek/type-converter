@@ -150,6 +150,13 @@ public:
     //DbgAboutSourceType
     static QString varHash2str(const QVariantHash &h, const bool ignoreEmpty = true);
 
+    static QVariantMap getPower2groups(const QMap<int, int> &groupId2power);
+
+    static QString map2jsonLine(const QVariantMap &map);
+
+    static int percent2lampPowerValue(const int &percent);
+
+    static int lampPowerValue2percent(const int &lampPowerValue);
 };
 
 #endif // CONVERTATYPE_H

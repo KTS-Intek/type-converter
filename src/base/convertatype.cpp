@@ -1,5 +1,8 @@
 #include "convertatype.h"
 
+#include <QJsonObject>
+#include <QJsonDocument>
+
 #include "matildalimits.h"
 #include "valuevalidator.h"
 #include "prettyvalues.h"
@@ -832,6 +835,47 @@ QString ConvertAtype::varHash2str(const QVariantHash &h, const bool ignoreEmpty)
         l.append(QString("%1=%2").arg(lk.at(i)).arg(h.value(lk.at(i)).toString()));
     }
     return l.join("\n");
+}
+
+QVariantMap ConvertAtype::getPower2groups(const QMap<int, int> &groupId2power)
+{
+    const QList<int> lk = groupId2power.keys();
+    QVariantMap map;
+
+    for(int i = 0, imax = lk.size(); i < imax; i++){
+
+        const QString grp = QString::number(lk.at(i));
+        const QString pwr = QString::number( groupId2power.value(lk.at(i)) * 254 / 100 );//convert percents to 0-0xFE
+
+        QStringList l = map.value(pwr).toStringList();
+        l.append(grp);
+        map.insert(pwr, l);
+    }
+    return map;
+
+}
+
+QString ConvertAtype::map2jsonLine(const QVariantMap &map)
+{
+    return QJsonDocument(QJsonObject::fromVariantMap(map)).toJson(QJsonDocument::Compact);
+}
+
+int ConvertAtype::percent2lampPowerValue(const int &percent)
+{
+    const int lampPower = percent*254/100;
+    if(percent != lampPowerValue2percent(lampPower)){
+
+        for(int i = 1, j = percent; i < 100 && j < 101; i++, j++){
+             if(percent == lampPowerValue2percent(lampPower + i))
+                 return (lampPower + i);
+        }
+    }
+    return lampPower;
+}
+
+int ConvertAtype::lampPowerValue2percent(const int &lampPowerValue)
+{
+    return (lampPowerValue * 100)/254;
 }
 
 //-------------------------------------------------------------------------------
