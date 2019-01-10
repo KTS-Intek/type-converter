@@ -837,6 +837,8 @@ QString ConvertAtype::varHash2str(const QVariantHash &h, const bool ignoreEmpty)
     return l.join("\n");
 }
 
+//-------------------------------------------------------------------------------
+
 QVariantMap ConvertAtype::getPower2groups(const QMap<int, int> &groupId2power)
 {
     const QList<int> lk = groupId2power.keys();
@@ -855,10 +857,14 @@ QVariantMap ConvertAtype::getPower2groups(const QMap<int, int> &groupId2power)
 
 }
 
+//-------------------------------------------------------------------------------
+
 QString ConvertAtype::map2jsonLine(const QVariantMap &map)
 {
     return QJsonDocument(QJsonObject::fromVariantMap(map)).toJson(QJsonDocument::Compact);
 }
+
+//-------------------------------------------------------------------------------
 
 int ConvertAtype::percent2lampPowerValue(const int &percent)
 {
@@ -873,9 +879,56 @@ int ConvertAtype::percent2lampPowerValue(const int &percent)
     return lampPower;
 }
 
+//-------------------------------------------------------------------------------
+
 int ConvertAtype::lampPowerValue2percent(const int &lampPowerValue)
 {
     return (lampPowerValue * 100)/254;
+}
+
+//-------------------------------------------------------------------------------
+
+QStringList ConvertAtype::qslFromHash(const QHash<QString, QString> &h, const QString &separ, QList<QString> lk)
+{
+    if(lk.isEmpty()){
+        lk = h.keys();
+        std::sort(lk.begin(), lk.end());
+    }
+
+    QStringList l;
+    for(int i = 0, iMax = lk.size(); i < iMax; i++)
+        l.append(lk.at(i) + separ + h.value(lk.at(i)));
+    return l;
+}
+
+//-------------------------------------------------------------------------------
+
+QHash<QString, QString> ConvertAtype::machine2human(const QStringList &machineList, const QStringList &human)
+{
+    QHash<QString, QString> h;
+    for(int i = 0, iMax = machineList.size(), iMax2 = human.size(); i < iMax && i < iMax2; i++)
+        h.insert(machineList.at(i), human.at(i));
+    return h;
+}
+//-------------------------------------------------------------------------------
+
+
+QHash<QString, QString> ConvertAtype::strHashFromQsl(const QStringList &l, const QString &separ, QList<QString> &lk, const int key, const int val, const bool oneMode)
+{
+    QHash<QString,QString> h;
+    lk.clear();
+    for(int i = 0, iMax = l.size(); i < iMax; i++){
+        const QStringList ll = l.at(i).split(separ);
+        if(ll.isEmpty())
+            continue;
+        int s = ll.size();
+        if(s <= key || s <= val)
+            continue;
+
+        h.insert(ll.at(key), oneMode ? ll.at(val) : ll.mid(val).join(separ));
+
+    }
+    return h;
 }
 
 //-------------------------------------------------------------------------------

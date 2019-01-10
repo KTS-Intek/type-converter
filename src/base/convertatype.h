@@ -157,6 +157,14 @@ public:
     static int percent2lampPowerValue(const int &percent);
 
     static int lampPowerValue2percent(const int &lampPowerValue);
+
+    //globalhelper
+    static QStringList qslFromHash(const QHash<QString,QString> &h, const QString &separ, QList<QString> lk = QList<QString>());
+
+    static QHash<QString,QString> machine2human(const QStringList &machineList, const QStringList &human);
+
+    static QHash<QString,QString> strHashFromQsl(const QStringList &l, const QString &separ, QList<QString> &lk, const int key = 0, const int val = 1, const bool oneMode = true);
+
 };
 
 #endif // CONVERTATYPE_H

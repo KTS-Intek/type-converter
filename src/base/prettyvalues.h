@@ -49,6 +49,16 @@ public:
      static  void removeLineFromList(const QString &lPartOfline, QStringList &l);
 
      static  QStringList replaceLineFromList(const QString &lPartOfline, QStringList l, const QString &rPartOfLine);
+
+
+     //guihelper
+     static QString humanByteView(QString str);
+
+     static QString humanByteView(const qint64 &val);
+
+     //showmesshelper4wdgt
+     static QString addWithFontColorRed(const QString m);
+
 };
 
 #endif // PRETTYVALUES_H

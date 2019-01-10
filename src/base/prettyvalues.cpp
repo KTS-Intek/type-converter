@@ -312,4 +312,28 @@ QStringList PrettyValues::replaceLineFromList(const QString &lPartOfline, QStrin
     return l;
 }
 
+QString PrettyValues::humanByteView(QString str)
+{
+    QString retVal = str.right(3);
+    str.chop(3);
+
+    while(!str.isEmpty()){
+        retVal.prepend(str.right(3) + " ");
+        str.chop(3);
+    }
+    return retVal;
+}
+
+QString PrettyValues::humanByteView(const qint64 &val)
+{
+    return humanByteView(QString::number(val));
+
+}
+
+QString PrettyValues::addWithFontColorRed(const QString m)
+{
+    return QString("<font color=red>%1</font>").arg(m);
+
+}
+
 //--------------------------------------------------------------
