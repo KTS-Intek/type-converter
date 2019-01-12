@@ -16,7 +16,8 @@ HEADERS += \
     $$PWD/src/shared/embeedefaultreadcommandlist.h \
     $$PWD/src/shared/ifacehelper.h \
     $$PWD/matilda-bbb-src/shared/ifacemanagerhelper.h \
-    $$PWD/matilda-bbb-src/shared/macaddresshelper.h
+    $$PWD/matilda-bbb-src/shared/macaddresshelper.h \
+    $$PWD/src/matilda/aes128cifradofromphp.h
 
 
 SOURCES += \
@@ -26,5 +27,6 @@ SOURCES += \
     $$PWD/src/shared/embeedefaultreadcommandlist.cpp \
     $$PWD/src/shared/ifacehelper.cpp \
     $$PWD/matilda-bbb-src/shared/ifacemanagerhelper.cpp \
-    $$PWD/matilda-bbb-src/shared/macaddresshelper.cpp
+    $$PWD/matilda-bbb-src/shared/macaddresshelper.cpp \
+    $$PWD/src/matilda/aes128cifradofromphp.cpp
 

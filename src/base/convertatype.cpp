@@ -932,3 +932,24 @@ QHash<QString, QString> ConvertAtype::strHashFromQsl(const QStringList &l, const
 }
 
 //-------------------------------------------------------------------------------
+
+QPointF ConvertAtype::coordinatesFromStr(const QString &s, bool &ok)
+{
+    QStringList l = s.split(",", QString::SkipEmptyParts);
+    qreal defLong, defLatitude;
+    bool okX = false, okY = false;
+
+    if(l.size() == 2){
+        defLong = QString(l.first()).toDouble(&okX);
+        defLatitude = QString(l.last()).toDouble(&okY);
+    }
+
+    if(okX && okY){
+        ok = true;
+        return QPointF(defLong, defLatitude);
+    }
+    ok = false;
+    return QPointF(0,0);
+}
+
+//-------------------------------------------------------------------------------

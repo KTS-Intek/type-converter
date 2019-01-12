@@ -9,6 +9,7 @@
 #include <QTime>
 #include <QBitArray>
 #include <QByteArray>
+#include <QPointF>
 
 class ConvertAtype
 {
@@ -164,6 +165,9 @@ public:
     static QHash<QString,QString> machine2human(const QStringList &machineList, const QStringList &human);
 
     static QHash<QString,QString> strHashFromQsl(const QStringList &l, const QString &separ, QList<QString> &lk, const int key = 0, const int val = 1, const bool oneMode = true);
+
+    //fireflyhelper.h
+    static QPointF coordinatesFromStr(const QString &s, bool &ok);
 
 };
 

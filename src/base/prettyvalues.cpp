@@ -24,10 +24,10 @@ QDateTime PrettyValues::getBuildDate()
 QString PrettyValues::prettyTimeValue(QString &f, qint64 mynulo)
 {
 
-    f = "hh:mm:ss";
+    f = QObject::tr("hh:mm:ss");
     QString s = "";
     if(mynulo >= 86400000){ //1 day
-        f.prepend("d ");
+        f.prepend(QObject::tr("d "));
         s = QString::number(mynulo/86400000) + " ";
         mynulo %= 86400000;
     }
@@ -97,7 +97,7 @@ QString PrettyValues::getTableName4poll(const QDateTime &dtPoll, const quint8 &p
     case POLL_CODE_READ_TOTAL           : tableName = dtPoll.toUTC().toString("yyyy_MM_dd_hh_mm"); break;
     default:{
         tableName = dtPoll.toUTC().toString("yyyy_MM_dd_hh_mm");
-//        tableName.clear();
+        //        tableName.clear();
         break;}
 
     }
@@ -132,24 +132,24 @@ QString PrettyValues::prettyNumber(const qreal &val, int mPrec)
 
 QString PrettyValues::prettyNumber(const qreal &val, int mPrec, const int &maxPlgPrec)
 {
-//    if(mPrec < 1 || mPrec > maxPlgPrec)
-//        return "";
+    //    if(mPrec < 1 || mPrec > maxPlgPrec)
+    //        return "";
 
-//    QString s = QString::number(val, 'f', mPrec);
-//    s = s.replace(",", ".");
-//    if(s.isEmpty())
-//        return s;
-//    while(s.right(1) == "0")
-//        s.chop(1);
+    //    QString s = QString::number(val, 'f', mPrec);
+    //    s = s.replace(",", ".");
+    //    if(s.isEmpty())
+    //        return s;
+    //    while(s.right(1) == "0")
+    //        s.chop(1);
 
 
-//    if(s == "0." || s.isEmpty())
-//        return "0";
+    //    if(s == "0." || s.isEmpty())
+    //        return "0";
 
-//    if(s.right(1) == ".")
-//        s.append("0");
+    //    if(s.right(1) == ".")
+    //        s.append("0");
 
-//    return s;
+    //    return s;
 
 
     mPrec = qMin(qMax(mPrec, 1), maxPlgPrec);
@@ -235,8 +235,8 @@ QString PrettyValues::prettyHexDump(const QList<quint8> &list, const quint8 &com
 
     if(!str.isEmpty())
         str.chop(1);
-//    if(str.isEmpty())
-//        return "";
+    //    if(str.isEmpty())
+    //        return "";
 
     if(!str.isEmpty())
         str.prepend(", D:");
@@ -333,6 +333,19 @@ QString PrettyValues::humanByteView(const qint64 &val)
 QString PrettyValues::addWithFontColorRed(const QString m)
 {
     return QString("<font color=red>%1</font>").arg(m);
+
+}
+
+QString PrettyValues::byte2humanRead(const qint64 &bytes)
+{
+    if(bytes > 10000000)
+        return QString::number(bytes / 1000000) + QObject::tr("M");
+
+    if(bytes > 10000)
+        return QString::number(bytes / 1000) + QObject::tr("K");
+
+    return QString::number(bytes);
+
 
 }
 

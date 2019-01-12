@@ -59,6 +59,8 @@ public:
      //showmesshelper4wdgt
      static QString addWithFontColorRed(const QString m);
 
+     static QString byte2humanRead(const qint64 &bytes);
+
 };
 
 #endif // PRETTYVALUES_H
