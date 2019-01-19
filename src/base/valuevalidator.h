@@ -14,6 +14,8 @@ public:
 
     static quint32 getCorrectValue(const quint32 &in, const quint32 &maxValue);
 
+    static qint32 getCorrectValueSigned(const qint32 &in, const qint32 &maxValue, const qint32 &minValue);
+
 
     static QString validFullTableName(const QString &tableName, const quint8 &code);
 
@@ -42,6 +44,9 @@ public:
     static QTime checkTimeIsGood(const QTime &t, const QTime &deftime, bool &afterCorrection);
 
     static int getIntValFromList(const QStringList &list, const QString &key, const int &defRetVal);
+
+
+    static bool urlIsValid(const QString &strUrl);
 
 
 };

@@ -1,5 +1,5 @@
 #include "valuevalidator.h"
-
+#include <QUrl>
 
 //--------------------------------------------------------------
 
@@ -8,9 +8,18 @@ quint32 ValueValidator::getCorrectValue(const quint32 &in, const quint32 &maxVal
     if(in < 1)
         return 1;
     if(in > maxValue)
-        return (qint32)maxValue;
+        return maxValue;
 
-    return (qint32)in;
+    return in;
+}
+
+qint32 ValueValidator::getCorrectValueSigned(const qint32 &in, const qint32 &maxValue, const qint32 &minValue)
+{
+    if(in < minValue)
+        return minValue;
+    if(in > maxValue)
+        return maxValue;
+    return in;
 }
 
 
@@ -182,6 +191,12 @@ int ValueValidator::getIntValFromList(const QStringList &list, const QString &ke
         }
     }
     return defRetVal;
+}
+//--------------------------------------------------------------
+bool ValueValidator::urlIsValid(const QString &strUrl)
+{
+    const QUrl url(strUrl, QUrl::StrictMode);
+    return (url.isValid() && !strUrl.contains(" ") && !strUrl.contains(">") && !strUrl.contains("{"));
 }
 
 //--------------------------------------------------------------

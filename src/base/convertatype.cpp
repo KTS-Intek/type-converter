@@ -952,4 +952,25 @@ QPointF ConvertAtype::coordinatesFromStr(const QString &s, bool &ok)
     return QPointF(0,0);
 }
 
+QStringList ConvertAtype::replaceKeyInList(const QStringList &listIp, const QString &key, const QString &addIp)
+{
+    if(addIp.isEmpty() || key.isEmpty())
+        return listIp;
+
+    QString s = listIp.join("\n");
+
+    if(listIp.contains(key)){
+        s = s.replace(key, addIp);
+    }else{
+        s.prepend(addIp + "\n");
+    }
+    return s.split("\n", QString::SkipEmptyParts);
+}
+
+QStringList ConvertAtype::replaceKeyInList(const QStringList &listIpSource, const QString &key, const QStringList &addList)
+{
+    return replaceKeyInList(listIpSource, key, addList.join("\n"));
+
+}
+
 //-------------------------------------------------------------------------------

@@ -1,6 +1,9 @@
 INCLUDEPATH  += $$PWD\
                 $$PWD/../../defines/defines
 
+
+
+#Dependencies - nothing)
 contains( QT, network) {
 HEADERS += \
     $$PWD/src/shared/networkconverthelper.h
@@ -8,6 +11,21 @@ HEADERS += \
 SOURCES += \
     $$PWD/src/shared/networkconverthelper.cpp
 }
+
+contains( QT, serialport) {
+DEFINES += HASSERIALLIB=1
+}
+
+
+
+win32 {
+DEFINES += BUILDTIME=\\\"$$system('echo %time%')\\\"
+DEFINES += BUILDDATE=\\\"$$system('echo %date%')\\\"
+} else {
+DEFINES += BUILDTIME=\\\"$$system(date '+%H:%M:%S')\\\"
+DEFINES += BUILDDATE=\\\"$$system(date '+%Y/%m/%d')\\\"
+}
+
 
 HEADERS += \
     $$PWD/src/base/convertatype.h \
@@ -17,6 +35,7 @@ HEADERS += \
     $$PWD/src/shared/ifacehelper.h \
     $$PWD/matilda-bbb-src/shared/ifacemanagerhelper.h \
     $$PWD/matilda-bbb-src/shared/macaddresshelper.h \
+    $$PWD/src/m2m-service/serializeddatacalculation.h \
     $$PWD/src/matilda/aes128cifradofromphp.h
 
 
@@ -28,5 +47,6 @@ SOURCES += \
     $$PWD/src/shared/ifacehelper.cpp \
     $$PWD/matilda-bbb-src/shared/ifacemanagerhelper.cpp \
     $$PWD/matilda-bbb-src/shared/macaddresshelper.cpp \
+    $$PWD/src/m2m-service/serializeddatacalculation.cpp \
     $$PWD/src/matilda/aes128cifradofromphp.cpp
 

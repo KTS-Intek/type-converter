@@ -1,5 +1,5 @@
 #include "networkconverthelper.h"
-
+#include <QUrl>
 
 QString NetworkConvertHelper::showNormalIP(const QHostAddress &hAddr){ return showNormalIP(hAddr.toString()); }
 
@@ -79,5 +79,40 @@ QString NetworkConvertHelper::getHostsFromSvahaHash(const QVariantHash &svahaHas
     }
     return listIp.join("\n");
 }
+
+
+//-------------------------------------------------------------------------
+
+
+bool NetworkConvertHelper::isIpAddress(const QString &s)
+{
+#ifdef MTD_DISABLE_NETWORK
+return true;
+#else
+    return (QHostAddress(s).protocol() == QAbstractSocket::IPv4Protocol || QHostAddress(s).protocol() == QAbstractSocket::IPv6Protocol);
+#endif
+}
+
+//-------------------------------------------------------------------------
+
+QStringList NetworkConvertHelper::removeNotAllowedHostAddr(const bool &hasDns, const QStringList &hostAddrList)
+{
+    QStringList l;
+#ifndef MTD_DISABLE_NETWORK
+    for(int i = 0, iMax = hostAddrList.size(); i < iMax; i++){
+        if(isIpAddress(hostAddrList.at(i))){
+            l.append(hostAddrList.at(i));
+        }else{
+            if(hasDns){
+                const QUrl u(hostAddrList.at(i));
+                if(u.isValid())
+                    l.append(hostAddrList.at(i));
+            }
+        }
+    }
+#endif
+    return l;
+}
+
 
 //-------------------------------------------------------------------------

@@ -169,6 +169,12 @@ public:
     //fireflyhelper.h
     static QPointF coordinatesFromStr(const QString &s, bool &ok);
 
+//stringlisthelper
+    static QStringList replaceKeyInList(const QStringList &listIp, const QString &key, const QString &addIp);
+
+    static QStringList replaceKeyInList(const QStringList &listIpSource, const QString &key, const QStringList &addList);
+
+
 };
 
 #endif // CONVERTATYPE_H

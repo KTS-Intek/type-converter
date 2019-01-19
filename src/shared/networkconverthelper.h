@@ -26,6 +26,12 @@ public:
     static HostNamePort getHostAndPortFromLine(const QString &line, const quint16 &defPort);
 
     static QString getHostsFromSvahaHash(const QVariantHash &svahaHash);
+
+    static bool isIpAddress(const QString &s);
+
+    static QStringList removeNotAllowedHostAddr(const bool &hasDns, const QStringList &hostAddrList);//checkIpAndUrl
+
+
 };
 
 #endif // NETWORKCONVERTHELPER_H
