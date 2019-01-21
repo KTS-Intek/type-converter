@@ -5,18 +5,46 @@ INCLUDEPATH  += $$PWD\
 
 #Dependencies - nothing)
 contains( QT, network) {
+message(type-converter: network is enabled)
 HEADERS += \
-    $$PWD/src/shared/networkconverthelper.h
+    $$PWD/src/shared/networkconverthelper.h \
+    $$PWD/matilda-bbb-src/shared/macaddresshelper.h \
+    $$PWD/matilda-bbb-src/shared/ifacemanagerhelper.h
+
+
 
 SOURCES += \
-    $$PWD/src/shared/networkconverthelper.cpp
+    $$PWD/src/shared/networkconverthelper.cpp \
+    $$PWD/matilda-bbb-src/shared/macaddresshelper.cpp \
+    $$PWD/matilda-bbb-src/shared/ifacemanagerhelper.cpp
 }
 
 contains( QT, serialport) {
+message(type-converter: serialport is enabled)
 DEFINES += HASSERIALLIB=1
+
+HEADERS += \
+    $$PWD/src/shared/embeedefaultreadcommandlist.h
+
+SOURCES += \
+    $$PWD/src/shared/embeedefaultreadcommandlist.cpp
+
+
 }
 
+contains( QT, network)|contains( QT, serialport){
+message(type-converter: iface support is enabled)
+HEADERS += \
+    $$PWD/src/shared/ifacehelper.h \
+    $$PWD/src/m2m-service/serializeddatacalculation.h
 
+SOURCES += \
+    $$PWD/src/shared/ifacehelper.cpp \
+    $$PWD/src/m2m-service/serializeddatacalculation.cpp
+}else{
+message(type-converter: the simple mode is enabled)
+
+}
 
 win32 {
 DEFINES += BUILDTIME=\\\"$$system('echo %time%')\\\"
@@ -31,11 +59,6 @@ HEADERS += \
     $$PWD/src/base/convertatype.h \
     $$PWD/src/base/prettyvalues.h \
     $$PWD/src/base/valuevalidator.h \
-    $$PWD/src/shared/embeedefaultreadcommandlist.h \
-    $$PWD/src/shared/ifacehelper.h \
-    $$PWD/matilda-bbb-src/shared/ifacemanagerhelper.h \
-    $$PWD/matilda-bbb-src/shared/macaddresshelper.h \
-    $$PWD/src/m2m-service/serializeddatacalculation.h \
     $$PWD/src/matilda/aes128cifradofromphp.h
 
 
@@ -43,10 +66,5 @@ SOURCES += \
     $$PWD/src/base/convertatype.cpp \
     $$PWD/src/base/prettyvalues.cpp \
     $$PWD/src/base/valuevalidator.cpp \
-    $$PWD/src/shared/embeedefaultreadcommandlist.cpp \
-    $$PWD/src/shared/ifacehelper.cpp \
-    $$PWD/matilda-bbb-src/shared/ifacemanagerhelper.cpp \
-    $$PWD/matilda-bbb-src/shared/macaddresshelper.cpp \
-    $$PWD/src/m2m-service/serializeddatacalculation.cpp \
     $$PWD/src/matilda/aes128cifradofromphp.cpp
 
