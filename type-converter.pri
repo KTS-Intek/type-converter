@@ -1,11 +1,20 @@
+# Version=0.0.1
+#Dependencies - nothing)
+# DEFINES += DONOTINCLUDEIFACEPROCESSOR   - disables iface converters
+
 INCLUDEPATH  += $$PWD\
                 $$PWD/../../defines/defines
 
 
 
-#Dependencies - nothing)
+
 contains( QT, network) {
-message(type-converter: network is enabled)
+
+    contains(DEFINES, DONOTINCLUDEIFACEPROCESSOR){
+        message(type-converter: network is disabled)
+    }else{
+
+        message(type-converter: network is enabled)
 HEADERS += \
     $$PWD/src/shared/networkconverthelper.h \
     $$PWD/matilda-bbb-src/shared/macaddresshelper.h \
@@ -17,10 +26,16 @@ SOURCES += \
     $$PWD/src/shared/networkconverthelper.cpp \
     $$PWD/matilda-bbb-src/shared/macaddresshelper.cpp \
     $$PWD/matilda-bbb-src/shared/ifacemanagerhelper.cpp
+    }
 }
 
 contains( QT, serialport) {
-message(type-converter: serialport is enabled)
+
+    contains(DEFINES, DONOTINCLUDEIFACEPROCESSOR){
+        message(type-converter: serialport is disabled)
+    }else{
+
+        message(type-converter: serialport is enabled)
 DEFINES += HASSERIALLIB=1
 
 HEADERS += \
@@ -29,11 +44,15 @@ HEADERS += \
 SOURCES += \
     $$PWD/src/shared/embeedefaultreadcommandlist.cpp
 
-
+    }
 }
 
 contains( QT, network)|contains( QT, serialport){
-message(type-converter: iface support is enabled)
+    contains(DEFINES, DONOTINCLUDEIFACEPROCESSOR){
+        message(type-converter: iface support is disabled)
+    }else{
+
+        message(type-converter: iface support is enabled)
 HEADERS += \
     $$PWD/src/shared/ifacehelper.h \
     $$PWD/src/m2m-service/serializeddatacalculation.h
@@ -41,6 +60,8 @@ HEADERS += \
 SOURCES += \
     $$PWD/src/shared/ifacehelper.cpp \
     $$PWD/src/m2m-service/serializeddatacalculation.cpp
+    }
+
 }else{
 message(type-converter: the simple mode is enabled)
 
