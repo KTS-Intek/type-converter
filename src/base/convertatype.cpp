@@ -327,39 +327,56 @@ QString ConvertAtype::hashReal2stringLine(const QVariantHash &h, const QStringLi
 
 QStringList ConvertAtype::listNiFromLine(const QString &aLine)
 {
+    return listNiFromLine(aLine, false);
+}
+
+//-------------------------------------------------------------------------------
+
+QStringList ConvertAtype::listNiFromLine(const QString &aLine, const bool &ignoreLimit)
+{
+    return listNiFromLine(aLine, ",", ignoreLimit);
+}
+
+//-------------------------------------------------------------------------------
+
+QStringList ConvertAtype::listNiFromLine(const QString &aLine, const QString &splitSymbol, const bool &ignoreLimit)
+{
+    //the default split symbol was ','
     //ZigBeeGlobal::listNiFromLine
     QStringList listNI;
     if(!aLine.isEmpty()){
 
-        QStringList listComma ;
-        // QStringList listNI;
-
-        listComma = aLine.split(",");
+        const QStringList listComma = aLine.split(splitSymbol);
 
         int niCounter = 0;
-        foreach(QString strComma, listComma){
+        const int niLimit = ignoreLimit ? MAX_METER_COUNT : MAX_REQUEST_NI_IN_LINE;
+        for(int iii = 0, iiiMax = listComma.size(); iii < iiiMax; iii++){//        foreach(QString strComma, listComma){
+            const QString strComma = listComma.at(iii);
 
             if(strComma.indexOf('-') >= 0){
-                QStringList listDefis = strComma.split("-");
+                const QStringList listDefis = strComma.split("-");
 
                 if(listDefis.size() > 1){
                     bool ok;
                     quint64 poch = listDefis.first().toInt(&ok, 10);
 
                     if(ok){
-                        quint64 endNI=listDefis.last().toInt(&ok, 10);
+                        const quint64 endNI=listDefis.last().toInt(&ok, 10);
                         if(ok){
                             if(poch <= endNI){
-                                for( ; poch <= endNI; poch++){
+                                for( ; poch <= endNI && niCounter < niLimit; poch++){
                                     listNI.append(QString::number(poch));
                                     niCounter++;
                                 }
                             }else{
-                                for( ; endNI <= poch; poch--){
+                                for( ; endNI <= poch && niCounter < niLimit; poch--){
                                     listNI.append(QString::number(poch));
                                     niCounter++;
                                 }
                             }
+
+                            if(niCounter >= niLimit)
+                                break;
 
                         }else{
                             listNI.append(listDefis.first());
@@ -382,8 +399,10 @@ QStringList ConvertAtype::listNiFromLine(const QString &aLine)
                 listNI.append(strComma);
                 niCounter++;
             }
-            if(niCounter > MAX_REQUEST_NI_IN_LINE)
+
+            if(niCounter >= niLimit)
                 break;
+
         }
         listNI.removeDuplicates();
 

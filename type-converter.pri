@@ -6,15 +6,19 @@ INCLUDEPATH  += $$PWD\
                 $$PWD/../../defines/defines
 
 
+CONFIG(release, debug|release) {
+    QMAKE_POST_LINK=$(STRIP) $(TARGET)
+    message($$TARGET ", type-converter: Strip the target")
+}
 
 
 contains( QT, network) {
 
     contains(DEFINES, DONOTINCLUDEIFACEPROCESSOR){
-        message(type-converter: network is disabled)
+        message($$TARGET ", type-converter: network is disabled")
     }else{
 
-        message(type-converter: network is enabled)
+        message($$TARGET ", type-converter: network is enabled")
 HEADERS += \
     $$PWD/src/shared/networkconverthelper.h \
     $$PWD/matilda-bbb-src/shared/macaddresshelper.h \
@@ -32,38 +36,34 @@ SOURCES += \
 contains( QT, serialport) {
 
     contains(DEFINES, DONOTINCLUDEIFACEPROCESSOR){
-        message(type-converter: serialport is disabled)
+        message($$TARGET ", type-converter: serialport is disabled")
     }else{
 
-        message(type-converter: serialport is enabled)
+        message($$TARGET ", type-converter: serialport is enabled")
 DEFINES += HASSERIALLIB=1
-
-HEADERS += \
-    $$PWD/src/shared/embeedefaultreadcommandlist.h
-
-SOURCES += \
-    $$PWD/src/shared/embeedefaultreadcommandlist.cpp
 
     }
 }
 
 contains( QT, network)|contains( QT, serialport){
     contains(DEFINES, DONOTINCLUDEIFACEPROCESSOR){
-        message(type-converter: iface support is disabled)
+        message($$TARGET ", type-converter: iface support is disabled")
     }else{
 
-        message(type-converter: iface support is enabled)
+        message($$TARGET ", type-converter: iface support is enabled")
 HEADERS += \
     $$PWD/src/shared/ifacehelper.h \
-    $$PWD/src/m2m-service/serializeddatacalculation.h
+    $$PWD/src/m2m-service/serializeddatacalculation.h \
+    $$PWD/src/shared/embeedefaultreadcommandlist.h
 
 SOURCES += \
     $$PWD/src/shared/ifacehelper.cpp \
-    $$PWD/src/m2m-service/serializeddatacalculation.cpp
+    $$PWD/src/m2m-service/serializeddatacalculation.cpp \
+    $$PWD/src/shared/embeedefaultreadcommandlist.cpp
     }
 
 }else{
-message(type-converter: the simple mode is enabled)
+message($$TARGET ", type-converter: the simple mode is enabled")
 
 }
 

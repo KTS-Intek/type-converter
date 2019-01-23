@@ -79,6 +79,9 @@ public:
     static QString hashReal2stringLine(const QVariantHash &h, const QStringList &lk, const int &prec, const QString &separ);
 
     static QStringList listNiFromLine(const QString &aLine) ;
+    static QStringList listNiFromLine(const QString &aLine, const bool &ignoreLimit) ;
+
+    static QStringList listNiFromLine(const QString &aLine, const QString &splitSymbol, const bool &ignoreLimit) ;
 
     // mtypeconversion.h
     static QList<int> strList2intList(const QStringList &sl);
