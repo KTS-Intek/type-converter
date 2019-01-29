@@ -74,7 +74,7 @@ DEFINES += BUILDDATE=\\\"$$system('echo %date%')\\\"
 DEFINES += BUILDTIME=\\\"$$system(date '+%H:%M:%S')\\\"
 DEFINES += BUILDDATE=\\\"$$system(date '+%Y/%m/%d')\\\"
 }
-
+DEFINES += MYAPP_VERSION=\\\"$$VERSION\\\"
 
 HEADERS += \
     $$PWD/src/base/convertatype.h \
