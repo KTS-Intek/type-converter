@@ -80,6 +80,12 @@ quint32 ValueValidator::validateIntegerRange(const QString &key, const QVariantM
     if(!ok || !map.contains(key))
         return defValues.value(key).toUInt();
 
+    return validateIntegerRange(value, min, max);
+
+}
+//--------------------------------------------------------------
+quint32 ValueValidator::validateIntegerRange(const quint32 &value, const quint32 &min, const quint32 &max)
+{
     if(value < min)
         return min;
     if(value > max)
