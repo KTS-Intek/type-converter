@@ -15,8 +15,10 @@ QString PrettyValues::getBuildDateStr()
 
 QDateTime PrettyValues::getBuildDate()
 {
-    const QDateTime dt = QDateTime::fromString(getBuildDateStr(), "yyyy-MM-dd hh:mm:ss");
-    return dt.isValid() ? dt : QDateTime(QDate(2017,1,1), QTime(0,0,0,0));
+    const QString dtstr = getBuildDateStr();
+    const QString separ = dtstr.contains("/") ? "/" : "-";
+    const QDateTime dt = QDateTime::fromString(dtstr, QString("yyyy%1MM%1dd hh:mm:ss").arg(separ));
+    return dt.isValid() ? dt : QDateTime(QDate(2019,1,1), QTime(0,0,0,0));
 }
 
 //------------------------------------------------------------------------------------
