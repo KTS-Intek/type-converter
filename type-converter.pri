@@ -80,12 +80,14 @@ HEADERS += \
     $$PWD/src/base/convertatype.h \
     $$PWD/src/base/prettyvalues.h \
     $$PWD/src/base/valuevalidator.h \
-    $$PWD/src/matilda/aes128cifradofromphp.h
+    $$PWD/src/matilda/aes128cifradofromphp.h \
+    $$PWD/src/base/standardmessages.h
 
 
 SOURCES += \
     $$PWD/src/base/convertatype.cpp \
     $$PWD/src/base/prettyvalues.cpp \
     $$PWD/src/base/valuevalidator.cpp \
-    $$PWD/src/matilda/aes128cifradofromphp.cpp
+    $$PWD/src/matilda/aes128cifradofromphp.cpp \
+    $$PWD/src/base/standardmessages.cpp
 
