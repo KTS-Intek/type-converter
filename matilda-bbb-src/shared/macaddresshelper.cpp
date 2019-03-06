@@ -28,12 +28,43 @@ QStringList MacAddressHelper::getMacList()
      for(int i = 0, iMax = listIface.size(); i < iMax; i++){
 
          if(listIface.at(i).isValid()){
+
+#ifdef Q_OS_LINUX
+             if(listIface.at(i).humanReadableName().startsWith("tap") ||  listIface.at(i).humanReadableName().startsWith("tun"))
+                 continue;
+#endif
              const QString mac = listIface.at(i).hardwareAddress();
              if(isMacGood(mac) && !mac.isEmpty())
                  lmacs.append(mac);
 
          }
      }
+
+     if(lmacs.size() > 2){//I need only 2
+         QStringList lout;
+
+         QMap<QString, QStringList> map;
+         QStringList lk;
+
+
+         for(int i = 0, imax = lmacs.size(); i < imax; i++){
+             QString key = lmacs.at(i);
+             key.chop(1);
+             QStringList l = map.value(key);
+             l.append(lmacs.at(i));
+             map.insert(key, l);
+             if(!lk.contains(key))
+                 lk.append(key);
+         }
+
+         for(int i = 0, imax = lk.size(); i < imax; i++){
+             const QStringList l = map.value(lk.at(i));
+             if(l.size() > lout.size())
+                 lout = l;
+         }
+         lmacs = lout.mid(0,2);
+     }
+
  #ifdef Q_OS_ANDROID
 //#ifndef SIMPLEMATILDA
      if(lmacs.isEmpty() || lmacs.join("").isEmpty()){

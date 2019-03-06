@@ -13,7 +13,11 @@ public:
     static QDateTime getBuildDate();
 
 
-    static QString prettyTimeValue(QString &f, qint64 mynulo);
+    static QString prettyTimeValueFromSecs(const qint64 &secsmynulo);
+
+    static QString prettyTimeValue(const qint64 &msecmynulo);
+
+    static QString prettyTimeValue(QString &f, qint64 msecmynulo);
 
 
     static QString tablenameEnd4pollCode(const quint8 &pollCode);

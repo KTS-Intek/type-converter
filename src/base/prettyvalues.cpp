@@ -23,27 +23,42 @@ QDateTime PrettyValues::getBuildDate()
 
 //------------------------------------------------------------------------------------
 
-QString PrettyValues::prettyTimeValue(QString &f, qint64 mynulo)
+QString PrettyValues::prettyTimeValueFromSecs(const qint64 &secsmynulo)
+{
+    return prettyTimeValue(secsmynulo * 1000);
+}
+
+//------------------------------------------------------------------------------------
+
+QString PrettyValues::prettyTimeValue(const qint64 &msecmynulo)
+{
+    QString f;
+    return prettyTimeValue(f, msecmynulo);
+}
+
+//------------------------------------------------------------------------------------
+
+QString PrettyValues::prettyTimeValue(QString &f, qint64 msecmynulo)
 {
 
     f = QObject::tr("hh:mm:ss");
     QString s = "";
-    if(mynulo >= 86400000){ //1 day
+    if(msecmynulo >= 86400000){ //1 day
         f.prepend(QObject::tr("d "));
-        s = QString::number(mynulo/86400000) + " ";
-        mynulo %= 86400000;
+        s = QString::number(msecmynulo/86400000) + " ";
+        msecmynulo %= 86400000;
     }
 
-    s.append(QString::number(mynulo/3600000).rightJustified(2,'0') + ":");//hh
-    if(mynulo >= 3600000)
-        mynulo %= 3600000;
+    s.append(QString::number(msecmynulo/3600000).rightJustified(2,'0') + ":");//hh
+    if(msecmynulo >= 3600000)
+        msecmynulo %= 3600000;
 
 
-    s.append(QString::number(mynulo/60000).rightJustified(2,'0') + ":");//mm
-    if(mynulo >= 60000)
-        mynulo %= 60000;
+    s.append(QString::number(msecmynulo/60000).rightJustified(2,'0') + ":");//mm
+    if(msecmynulo >= 60000)
+        msecmynulo %= 60000;
 
-    s.append(QString::number(mynulo/1000).rightJustified(2,'0'));//ss
+    s.append(QString::number(msecmynulo/1000).rightJustified(2,'0'));//ss
     return s;
 
 }
