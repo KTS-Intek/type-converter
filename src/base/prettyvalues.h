@@ -12,6 +12,7 @@ public:
 
     static QDateTime getBuildDate();
 
+    static QString prettyTimeValueFromSecsWitAMask(const qint64 &secsmynulo);
 
     static QString prettyTimeValueFromSecs(const qint64 &secsmynulo);
 

@@ -17,8 +17,15 @@ QDateTime PrettyValues::getBuildDate()
 {
     const QString dtstr = getBuildDateStr();
     const QString separ = dtstr.contains("/") ? "/" : "-";
-    const QDateTime dt = QDateTime::fromString(dtstr, QString("yyyy%1MM%1dd hh:mm:ss").arg(separ));
+    const QDateTime dt = QDateTime(QDate::fromString(dtstr.left(10), QString("yyyy%1MM%1dd").arg(separ)),
+                                   QTime::fromString(dtstr.right(8),QString("hh:mm:ss")), Qt::UTC);//  QDateTime::fromString(dtstr, QString("yyyy%1MM%1dd hh:mm:ss").arg(separ));
     return dt.isValid() ? dt : QDateTime(QDate(2019,1,1), QTime(0,0,0,0));
+}
+
+QString PrettyValues::prettyTimeValueFromSecsWitAMask(const qint64 &secsmynulo)
+{
+    QString f;
+    return QObject::tr("%1 [%2]").arg(prettyTimeValue(f, secsmynulo * 1000)).arg(f);
 }
 
 //------------------------------------------------------------------------------------
@@ -43,11 +50,22 @@ QString PrettyValues::prettyTimeValue(QString &f, qint64 msecmynulo)
 
     f = QObject::tr("hh:mm:ss");
     QString s = "";
+
+    QString prependformat;
+    if(msecmynulo >= 126230400000){ //greater or equal 4 years
+        prependformat.append(QObject::tr("y' "));
+        s.append(QString::number( (msecmynulo/126230400000) * 4 ) + "' ");
+        msecmynulo %= 126230400000;
+    }
+
     if(msecmynulo >= 86400000){ //1 day
-        f.prepend(QObject::tr("d "));
-        s = QString::number(msecmynulo/86400000) + " ";
+        prependformat.append(QObject::tr("d "));
+        s.append(QString::number(msecmynulo/86400000) + " ");
         msecmynulo %= 86400000;
     }
+
+    if(!prependformat.isEmpty())
+        f.prepend(prependformat);
 
     s.append(QString::number(msecmynulo/3600000).rightJustified(2,'0') + ":");//hh
     if(msecmynulo >= 3600000)
@@ -59,6 +77,7 @@ QString PrettyValues::prettyTimeValue(QString &f, qint64 msecmynulo)
         msecmynulo %= 60000;
 
     s.append(QString::number(msecmynulo/1000).rightJustified(2,'0'));//ss
+
     return s;
 
 }

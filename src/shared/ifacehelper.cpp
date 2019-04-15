@@ -30,6 +30,9 @@ void IfaceHelper::showHexDump(QByteArray arr, QString ifaceName, bool isRead)
     const QString mask = ifaceName + QString( isRead ? " > " : " < " );
     const QString emptyMask = QString("").rightJustified(mask.length() + 13, ' ');
 
+    const QString currenttime = QTime::currentTime().toString("hh:mm:ss.zzz");
+    const QString instr = convertByteArr2asciiStr(arr, false) ;
+
     for(int ff = 0, ffMax = arr.size(); ff < ffMax; ff += 16){
 
         QString hexStr = arr.mid(ff,16).toHex().leftJustified(32, ' ').toUpper();
@@ -39,7 +42,7 @@ void IfaceHelper::showHexDump(QByteArray arr, QString ifaceName, bool isRead)
             hexStr = hexStr.insert(i, " ");
 
         if(ff == 0)
-            hexStr.prepend(mask + QTime::currentTime().toString("hh:mm:ss.zzz")+" ");
+            hexStr.prepend(mask + currenttime +" ");
         else
             hexStr.prepend(emptyMask);
 
@@ -53,7 +56,8 @@ void IfaceHelper::showHexDump(QByteArray arr, QString ifaceName, bool isRead)
 
     }
     emit ifaceLogArrAll(arr);
-
+    if(!instr.isEmpty())
+        emit ifaceLogPrettyAll(QString("%1%2 %3").arg(mask).arg(currenttime).arg(instr));
 }
 
 void IfaceHelper::giveMeYourCache()

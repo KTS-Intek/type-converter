@@ -22,17 +22,19 @@ contains( QT, network) {
 HEADERS += \
     $$PWD/src/shared/networkconverthelper.h \
     $$PWD/matilda-bbb-src/shared/macaddresshelper.h \
-    $$PWD/matilda-bbb-src/shared/ifacemanagerhelper.h
+    $$PWD/matilda-bbb-src/shared/ifacemanagerhelper.h \
+    $$PWD/src/shared/proxytypesconverter.h \
+    $$PWD/src/shared/proxytypesconvertertypes.h
 
 
 
 SOURCES += \
     $$PWD/src/shared/networkconverthelper.cpp \
     $$PWD/matilda-bbb-src/shared/macaddresshelper.cpp \
-    $$PWD/matilda-bbb-src/shared/ifacemanagerhelper.cpp
+    $$PWD/matilda-bbb-src/shared/ifacemanagerhelper.cpp \
+    $$PWD/src/shared/proxytypesconverter.cpp
     }
 }
-
 contains( QT, serialport) {
 
     contains(DEFINES, DONOTINCLUDEIFACEPROCESSOR){
@@ -40,7 +42,7 @@ contains( QT, serialport) {
     }else{
 
         message($$TARGET ", type-converter: serialport is enabled")
-DEFINES += HASSERIALLIB=1
+        DEFINES += HASSERIALLIB=1
 
     }
 }
@@ -71,8 +73,8 @@ win32 {
 DEFINES += BUILDTIME=\\\"$$system('echo %time%')\\\"
 DEFINES += BUILDDATE=\\\"$$system('echo %date%')\\\"
 } else {
-DEFINES += BUILDTIME=\\\"$$system(date '+%H:%M:%S')\\\"
-DEFINES += BUILDDATE=\\\"$$system(date '+%Y/%m/%d')\\\"
+DEFINES += BUILDTIME=\\\"$$system(date -u '+%H:%M:%S')\\\"
+DEFINES += BUILDDATE=\\\"$$system(date -u '+%Y/%m/%d')\\\"
 }
 DEFINES += MYAPP_VERSION=\\\"$$VERSION\\\"
 
