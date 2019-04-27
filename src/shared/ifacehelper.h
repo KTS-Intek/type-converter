@@ -10,8 +10,24 @@ class IfaceHelper : public QObject
 public:
     explicit IfaceHelper(const bool &disableCache, QObject *parent = 0);
 
-    QString convertByteArr2asciiStr(const QByteArray &arr, const bool ommitRightDot = true);
+    static QString convertByteArr2asciiStr(const QByteArray &arr, const bool ommitRightDot = true);
 
+
+    struct IffaceLogOut
+    {
+        QList<QByteArray> ifaceLogArrLine;
+        QStringList ifaceLogStr;
+        QByteArray ifaceLogArrAll;
+        QString ifaceLogPrettyAll;
+
+        IffaceLogOut() {}
+        IffaceLogOut(const QList<QByteArray> &ifaceLogArrLine, const QStringList &ifaceLogStr, const QByteArray &ifaceLogArrAll, const QString &ifaceLogPrettyAll) :
+            ifaceLogArrLine(ifaceLogArrLine), ifaceLogStr(ifaceLogStr), ifaceLogArrAll(ifaceLogArrAll), ifaceLogPrettyAll(ifaceLogPrettyAll) {}
+
+    };
+
+
+    static IffaceLogOut getIffaceLogOut(const QTime &time, const QByteArray &arr, const QString &ifaceName, const bool &isRead);
 
 
 signals:
@@ -22,6 +38,7 @@ signals:
     void ifaceLogArrAll(QByteArray arrAll);
 
     void ifaceLogPrettyAll(QString strall);//<iface name> <time> <hex><all data >
+
 
 public slots:
     void showHexDump(QByteArray arr, QString ifaceName, bool isRead);

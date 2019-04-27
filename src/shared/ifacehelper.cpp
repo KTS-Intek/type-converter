@@ -25,18 +25,20 @@ QString IfaceHelper::convertByteArr2asciiStr(const QByteArray &arr, const bool o
     return s;
 }
 
-void IfaceHelper::showHexDump(QByteArray arr, QString ifaceName, bool isRead)
+IfaceHelper::IffaceLogOut IfaceHelper::getIffaceLogOut(const QTime &time, const QByteArray &arr, const QString &ifaceName, const bool &isRead)
 {
+    IffaceLogOut iface;
+    const QString currenttime = time.toString("hh:mm:ss.zzz");
+
     const QString mask = ifaceName + QString( isRead ? " > " : " < " );
     const QString emptyMask = QString("").rightJustified(mask.length() + 13, ' ');
 
-    const QString currenttime = QTime::currentTime().toString("hh:mm:ss.zzz");
     const QString instr = convertByteArr2asciiStr(arr, false) ;
 
     for(int ff = 0, ffMax = arr.size(); ff < ffMax; ff += 16){
 
         QString hexStr = arr.mid(ff,16).toHex().leftJustified(32, ' ').toUpper();
-        emit ifaceLogArrLine(arr.mid(ff,16));
+        iface.ifaceLogArrLine.append(arr.mid(ff,16));
 
         for(int i = 30; i > 1; i -= 2)
             hexStr = hexStr.insert(i, " ");
@@ -47,17 +49,30 @@ void IfaceHelper::showHexDump(QByteArray arr, QString ifaceName, bool isRead)
             hexStr.prepend(emptyMask);
 
         const QString s = QString("%1 %2").arg(hexStr).arg( convertByteArr2asciiStr(arr.mid(ff,16), false) ) ;
-        if(disableCache)
-            emit ifaceLogStr(s);
-        else
-            cache.append(s);
-
-        qDebug() << s;
-
+        iface.ifaceLogStr.append(s);
     }
-    emit ifaceLogArrAll(arr);
+    iface.ifaceLogArrAll = arr;
     if(!instr.isEmpty())
-        emit ifaceLogPrettyAll(QString("%1%2 %3").arg(mask).arg(currenttime).arg(instr));
+        iface.ifaceLogPrettyAll = QString("%1%2 %3").arg(mask).arg(currenttime).arg(instr);
+    return iface;
+}
+
+void IfaceHelper::showHexDump(QByteArray arr, QString ifaceName, bool isRead)
+{
+    const IffaceLogOut iface = getIffaceLogOut(QTime::currentTime(), arr, ifaceName, isRead);
+
+    for(int i = 0, imax = iface.ifaceLogStr.size(); i < imax; i++){
+        emit ifaceLogArrLine(iface.ifaceLogArrLine.at(i));
+
+        if(disableCache)
+            emit ifaceLogStr(iface.ifaceLogStr.at(i));
+        else
+            cache.append(iface.ifaceLogStr.at(i));
+    }
+    emit ifaceLogArrAll(iface.ifaceLogArrAll);
+    if(!iface.ifaceLogPrettyAll.isEmpty())
+        emit ifaceLogPrettyAll(iface.ifaceLogPrettyAll);
+
 }
 
 void IfaceHelper::giveMeYourCache()
