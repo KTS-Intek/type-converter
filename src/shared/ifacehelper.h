@@ -33,6 +33,8 @@ public:
 signals:
     void ifaceLogStr(QString line); //<iface name> <time> <hex><data>  line 16 bytes
 
+    void ifaceLogNonBuf(QString line);
+
     void ifaceLogArrLine(QByteArray arrAll);//line 16 bytes
 
     void ifaceLogArrAll(QByteArray arrAll);

@@ -83,7 +83,8 @@ HEADERS += \
     $$PWD/src/base/prettyvalues.h \
     $$PWD/src/base/valuevalidator.h \
     $$PWD/src/matilda/aes128cifradofromphp.h \
-    $$PWD/src/base/standardmessages.h
+    $$PWD/src/base/standardmessages.h \
+    $$PWD/src/base/commandlinedecoder.h
 
 
 SOURCES += \
@@ -91,5 +92,6 @@ SOURCES += \
     $$PWD/src/base/prettyvalues.cpp \
     $$PWD/src/base/valuevalidator.cpp \
     $$PWD/src/matilda/aes128cifradofromphp.cpp \
-    $$PWD/src/base/standardmessages.cpp
+    $$PWD/src/base/standardmessages.cpp \
+    $$PWD/src/base/commandlinedecoder.cpp
 

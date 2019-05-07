@@ -63,6 +63,7 @@ void IfaceHelper::showHexDump(QByteArray arr, QString ifaceName, bool isRead)
 
     for(int i = 0, imax = iface.ifaceLogStr.size(); i < imax; i++){
         emit ifaceLogArrLine(iface.ifaceLogArrLine.at(i));
+        emit ifaceLogNonBuf(iface.ifaceLogStr.at(i));
 
         if(disableCache)
             emit ifaceLogStr(iface.ifaceLogStr.at(i));
