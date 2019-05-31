@@ -66,6 +66,8 @@ public:
 
      static QString byte2humanRead(const qint64 &bytes);
 
+     static QString connectionsett2prettyHuman(const QString &ip, const quint16 &port, const QString &login, const QString &objname, const QString &optionalmac);
+
 };
 
 #endif // PRETTYVALUES_H

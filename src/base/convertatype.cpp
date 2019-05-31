@@ -859,21 +859,27 @@ QString ConvertAtype::varHash2str(const QVariantHash &h, const bool ignoreEmpty)
 //-------------------------------------------------------------------------------
 
 QVariantMap ConvertAtype::getPower2groups(const QMap<int, int> &groupId2power)
+{    
+    return getPower2groupsExt(groupId2power, true);
+}
+//-------------------------------------------------------------------------------
+QVariantMap ConvertAtype::getPower2groupsExt(const QMap<int, int> &groupId2power, const bool &isPowerInPercents)
 {
     const QList<int> lk = groupId2power.keys();
     QVariantMap map;
 
+    const int multiplier = isPowerInPercents ? 254 : 100;
+
     for(int i = 0, imax = lk.size(); i < imax; i++){
 
         const QString grp = QString::number(lk.at(i));
-        const QString pwr = QString::number( groupId2power.value(lk.at(i)) * 254 / 100 );//convert percents to 0-0xFE
+        const QString pwr = QString::number( groupId2power.value(lk.at(i)) * multiplier / 100) ;//convert percents to 0-0xFE
 
         QStringList l = map.value(pwr).toStringList();
         l.append(grp);
         map.insert(pwr, l);
     }
     return map;
-
 }
 
 //-------------------------------------------------------------------------------

@@ -8,7 +8,30 @@
 
 QString PrettyValues::getBuildDateStr()
 {
-    return QString::fromLocal8Bit(BUILDDATE) + " " + QString::fromLocal8Bit(BUILDTIME);
+    //linux style
+    /* date -u '+%H:%M:%S'
+     *  14:28:31
+     *
+     * date -u '+%Y/%m/%d'
+     * 2019/05/16
+     *
+
+ %date%
+16.05.2019
+
+ %time%
+17:26:47,27
+     */
+
+    return
+        #ifdef Q_OS_WIN
+            QDate::fromString(QString::fromLocal8Bit(BUILDDATE), "dd.MM.yyyy").toString("yyyy/MM/dd")
+        #else
+            QString::fromLocal8Bit(BUILDDATE)
+        #endif
+            + " " +  QString::fromLocal8Bit(BUILDTIME).left(8);
+
+    //    return QString::fromLocal8Bit(BUILDDATE) + " " + QString::fromLocal8Bit(BUILDTIME);
 }
 
 //------------------------------------------------------------------------------------
@@ -19,7 +42,17 @@ QDateTime PrettyValues::getBuildDate()
     const QString separ = dtstr.contains("/") ? "/" : "-";
     const QDateTime dt = QDateTime(QDate::fromString(dtstr.left(10), QString("yyyy%1MM%1dd").arg(separ)),
                                    QTime::fromString(dtstr.right(8),QString("hh:mm:ss")), Qt::UTC);//  QDateTime::fromString(dtstr, QString("yyyy%1MM%1dd hh:mm:ss").arg(separ));
-    return dt.isValid() ? dt : QDateTime(QDate(2019,1,1), QTime(0,0,0,0));
+//    return dt.isValid() ? dt : QDateTime(QDate(2019,1,1), QTime(0,0,0,0));
+    const int addHours =
+#ifdef Q_OS_WIN
+    -10
+#else
+     0
+        #endif
+    ;
+
+    return dt.isValid() ? dt.addSecs(3600 * addHours) : QDateTime(QDate(2019,1,1), QTime(0,0,0,0));
+
 }
 
 QString PrettyValues::prettyTimeValueFromSecsWitAMask(const qint64 &secsmynulo)
@@ -383,6 +416,20 @@ QString PrettyValues::byte2humanRead(const qint64 &bytes)
     return QString::number(bytes);
 
 
+}
+
+//--------------------------------------------------------------
+
+QString PrettyValues::connectionsett2prettyHuman(const QString &ip, const quint16 &port, const QString &login, const QString &objname, const QString &optionalmac)
+{
+    QStringList l;
+    l.append(QString("[%1]:%2").arg(ip.simplified().trimmed()).arg(int(port)));
+    l.append(login);
+    l.append(objname);
+    if(!optionalmac.isEmpty())
+        l.append(optionalmac);
+
+    return l.join(", ");
 }
 
 //--------------------------------------------------------------

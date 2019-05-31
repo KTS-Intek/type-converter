@@ -7,7 +7,7 @@ StandardMessages::StandardMessages(QObject *parent) : QObject(parent)
 
 QString StandardMessages::cantOpenTheFile(const QString &filename, const QString &errstr)
 {
-    return tr("Can't open the file%1. '%2'").arg(addFileName(filename)).arg(errstr);
+    return tr("Couldn't open the file%1. '%2'").arg(addFileName(filename)).arg(errstr);
 }
 
 QString StandardMessages::cantOpenTheFileSmpl(const QString &errstr)
@@ -27,12 +27,12 @@ QString StandardMessages::cantReadThisNplainTextFile(const QString &filename)
 
 QString StandardMessages::cantSaveTheFile(const QString &filename, const QString &errstr)
 {
-    return tr("Can't save the file%1. '%2'").arg(addFileName(filename)).arg(errstr);
+    return tr("Couldn't save the file%1. '%2'").arg(addFileName(filename)).arg(errstr);
 }
 
 QString StandardMessages::cantSaveTheseSettings(const QString &errstr)
 {
-    return tr("Can't save thsese settings '%1'").arg(errstr);
+    return tr("Couldn't save thsese settings '%1'").arg(errstr);
 }
 
 QString StandardMessages::cantOpenTheConnection(const QString &err)

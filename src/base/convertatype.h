@@ -155,6 +155,7 @@ public:
     static QString varHash2str(const QVariantHash &h, const bool ignoreEmpty = true);
 
     static QVariantMap getPower2groups(const QMap<int, int> &groupId2power);
+    static QVariantMap getPower2groupsExt(const QMap<int, int> &groupId2power, const bool &isPowerInPercents);
 
     static QString map2jsonLine(const QVariantMap &map);
 
