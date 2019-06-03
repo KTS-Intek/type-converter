@@ -32,7 +32,7 @@ QString StandardMessages::cantSaveTheFile(const QString &filename, const QString
 
 QString StandardMessages::cantSaveTheseSettings(const QString &errstr)
 {
-    return tr("Couldn't save thsese settings '%1'").arg(errstr);
+    return tr("Couldn't save the settings '%1'").arg(errstr);
 }
 
 QString StandardMessages::cantOpenTheConnection(const QString &err)
