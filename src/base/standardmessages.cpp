@@ -37,17 +37,17 @@ QString StandardMessages::cantSaveTheseSettings(const QString &errstr)
 
 QString StandardMessages::cantOpenTheConnection(const QString &err)
 {
-    return tr("Can't establish a connection. '%1'").arg(err);
+    return tr("Couldn't establish a connection. '%1'").arg(err);
 }
 
 QString StandardMessages::badInputDataNesessaryKeys()
 {
-    return tr("The nesessary keys were not found");
+    return tr("The necessary keys were not found");
 }
 
 QString StandardMessages::cantDeleteTheFile(const QString &filename, const QString &errstr)
 {
-    return tr("Can't delete the file%1, '%2'").arg(addFileName(filename)).arg(errstr);
+    return tr("Couldn't delete the file%1, '%2'").arg(addFileName(filename)).arg(errstr);
 }
 
 QString StandardMessages::addFileName(const QString &filename)

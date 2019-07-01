@@ -3,7 +3,9 @@
 # DEFINES += DONOTINCLUDEIFACEPROCESSOR   - disables iface converters
 
 INCLUDEPATH  += $$PWD\
-                $$PWD/../../defines/defines
+                $$PWD/../../defines/defines\
+                $$PWD/../../defines/define-types\
+                $$PWD/../../defines/define-matilda-bbb
 
 
 CONFIG(release, debug|release) {
@@ -76,6 +78,7 @@ DEFINES += BUILDDATE=\\\"$$system('echo %date%')\\\"
 DEFINES += BUILDTIME=\\\"$$system(date -u '+%H:%M:%S')\\\"
 DEFINES += BUILDDATE=\\\"$$system(date -u '+%Y/%m/%d')\\\"
 }
+
 DEFINES += MYAPP_VERSION=\\\"$$VERSION\\\"
 
 HEADERS += \
