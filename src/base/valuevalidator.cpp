@@ -204,5 +204,12 @@ bool ValueValidator::urlIsValid(const QString &strUrl)
     const QUrl url(strUrl, QUrl::StrictMode);
     return (url.isValid() && !strUrl.contains(" ") && !strUrl.contains(">") && !strUrl.contains("{"));
 }
+//--------------------------------------------------------------
+int ValueValidator::getPercents(const int &total, const int &done)
+{
+    if(total < 1)
+        return 100;
+    return ((qMin(0, done) * 100) / total);
+}
 
 //--------------------------------------------------------------

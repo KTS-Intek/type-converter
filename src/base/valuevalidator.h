@@ -51,6 +51,7 @@ public:
 
     static bool urlIsValid(const QString &strUrl);
 
+    static int getPercents(const int &total, const int &done);
 
 };
 
