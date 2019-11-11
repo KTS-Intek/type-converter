@@ -27,6 +27,7 @@ public:
     static QString validTableCode(const quint8 &code);
 
 
+    static quint32 validateIntegerRange(const QString &key, const QVariantMap &map, const quint32 &defValue, const quint32 &min, const quint32 &max);
 
     static quint32 validateIntegerRange(const QString &key, const QVariantMap &map, const QVariantMap &defValues, const quint32 &min, const quint32 &max);
 

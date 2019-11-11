@@ -31,6 +31,8 @@ public:
 
     static QStringList removeNotAllowedHostAddr(const bool &hasDns, const QStringList &hostAddrList);//checkIpAndUrl
 
+    static bool isIpGood(const QString &ip, const QStringList &whitelist);
+
 
 };
 

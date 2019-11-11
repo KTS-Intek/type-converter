@@ -1,5 +1,7 @@
 #include "networkconverthelper.h"
 #include <QUrl>
+#include <QRegularExpression>
+
 
 QString NetworkConvertHelper::showNormalIP(const QHostAddress &hAddr){ return showNormalIP(hAddr.toString()); }
 
@@ -112,6 +114,32 @@ QStringList NetworkConvertHelper::removeNotAllowedHostAddr(const bool &hasDns, c
     }
 #endif
     return l;
+}
+
+//-------------------------------------------------------------------------
+
+bool NetworkConvertHelper::isIpGood(const QString &ip, const QStringList &whitelist)
+{
+    if(whitelist.isEmpty())
+        return true;
+
+    for(int i = 0, imax = whitelist.size(); i < imax; i++){
+
+        const QRegularExpression rx(whitelist.at(i), QRegularExpression::ExtendedPatternSyntaxOption);
+
+        if(rx.isValid()){
+            if(rx.match(ip, 0, QRegularExpression::NormalMatch).hasMatch()){
+                return true;
+            }
+        }else{
+            if(ip == whitelist.at(i)){
+                return true;
+            }
+        }
+
+
+    }
+    return false;
 }
 
 

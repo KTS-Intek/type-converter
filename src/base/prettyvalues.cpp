@@ -3,6 +3,7 @@
 #include <QDate>
 #include <QTime>
 #include "matildalimits.h"
+#include "ifaceconnectiondefs.h"
 
 //------------------------------------------------------------------------------------
 
@@ -430,6 +431,17 @@ QString PrettyValues::connectionsett2prettyHuman(const QString &ip, const quint1
         l.append(optionalmac);
 
     return l.join(", ");
+}
+
+QString PrettyValues::getPrettyIfaceName(const QVariantHash &h)
+{
+    QString s;
+    switch(h.value("ifaceMode").toInt()){
+    case IFACECONNTYPE_TCPCLNT  : s = QObject::tr("TCP/IP '%1'").arg(h.value("tcpHost").toString().remove("'")); break;
+    case IFACECONNTYPE_M2MCLNT  : s = QObject::tr("M2M '%1'").arg(h.value("m2mProfile").toString().remove("'")); break;
+    case IFACECONNTYPE_UART     : s = QObject::tr("Serial Port '%1'").arg(h.value(h.value("uartManual").toBool() ? "lastUart" : "defUart").toString() ); if(!h.value("uartManual").toBool()){ s.prepend("<b>"); s.append("</b>");} break;
+    }
+    return s;
 }
 
 //--------------------------------------------------------------

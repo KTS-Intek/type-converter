@@ -71,6 +71,17 @@ QString ValueValidator::validTableCode(const quint8 &code)
     return codeStr;
 }
 
+quint32 ValueValidator::validateIntegerRange(const QString &key, const QVariantMap &map, const quint32 &defValue, const quint32 &min, const quint32 &max)
+{
+    bool ok;
+    const quint32 value = map.value(key).toUInt(&ok);
+    if(!ok || !map.contains(key))
+        return validateIntegerRange(defValue, min, max);
+
+
+    return validateIntegerRange(value, min, max);
+}
+
 //--------------------------------------------------------------
 
 quint32 ValueValidator::validateIntegerRange(const QString &key, const QVariantMap &map, const QVariantMap &defValues, const quint32 &min, const quint32 &max)

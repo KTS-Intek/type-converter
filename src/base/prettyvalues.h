@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QVariantHash>
 
 class PrettyValues
 {
@@ -68,6 +69,8 @@ public:
 
      static QString connectionsett2prettyHuman(const QString &ip, const quint16 &port, const QString &login, const QString &objname, const QString &optionalmac);
 
+
+     static QString getPrettyIfaceName(const QVariantHash &h);
 };
 
 #endif // PRETTYVALUES_H
