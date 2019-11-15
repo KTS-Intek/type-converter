@@ -77,9 +77,21 @@ QString PrettyValues::prettyTimeValue(const qint64 &msecmynulo)
     return prettyTimeValue(f, msecmynulo);
 }
 
+QString PrettyValues::prettyTimeValueMsec(const qint64 &msecmynulo)
+{
+    QString f;
+    return prettyTimeValueExt(true, f, msecmynulo);
+}
+
 //------------------------------------------------------------------------------------
 
 QString PrettyValues::prettyTimeValue(QString &f, qint64 msecmynulo)
+{
+    return prettyTimeValueExt(false, f, msecmynulo);
+
+}
+
+QString PrettyValues::prettyTimeValueExt(const bool &addmsec, QString &f, qint64 msecmynulo)
 {
 
     f = QObject::tr("hh:mm:ss");
@@ -112,8 +124,12 @@ QString PrettyValues::prettyTimeValue(QString &f, qint64 msecmynulo)
 
     s.append(QString::number(msecmynulo/1000).rightJustified(2,'0'));//ss
 
+    if(addmsec){
+        msecmynulo %= 1000;
+        f.append(".zzz");
+        s.append("." + QString::number(msecmynulo).rightJustified(3,'0'));//msec
+    }
     return s;
-
 }
 
 //------------------------------------------------------------------------------------

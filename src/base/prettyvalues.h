@@ -18,8 +18,11 @@ public:
     static QString prettyTimeValueFromSecs(const qint64 &secsmynulo);
 
     static QString prettyTimeValue(const qint64 &msecmynulo);
+    static QString prettyTimeValueMsec(const qint64 &msecmynulo);
 
     static QString prettyTimeValue(QString &f, qint64 msecmynulo);
+
+    static QString prettyTimeValueExt(const bool &addmsec, QString &f, qint64 msecmynulo);
 
 
     static QString tablenameEnd4pollCode(const quint8 &pollCode);
