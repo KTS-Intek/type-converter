@@ -74,6 +74,8 @@ public:
 
 
      static QString getPrettyIfaceName(const QVariantHash &h);
+
+
 };
 
 #endif // PRETTYVALUES_H

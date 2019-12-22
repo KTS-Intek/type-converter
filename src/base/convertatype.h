@@ -178,6 +178,12 @@ public:
 
     static QStringList replaceKeyInList(const QStringList &listIpSource, const QString &key, const QStringList &addList);
 
+    static int daliPwr2linearPercents(const int &daliPwrPercents);
+
+    static qreal linearPwr2daliPwr(const int &linearPower, const qreal &refpower);
+
+    static int linearPwr2daliPwrInt(const int &linearPower, const qreal &refpower);
+
 
 };
 

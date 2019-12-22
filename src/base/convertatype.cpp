@@ -7,6 +7,9 @@
 #include "valuevalidator.h"
 #include "prettyvalues.h"
 
+#include <QtMath>
+
+
 //-------------------------------------------------------------------------------
 
 QVariantHash ConvertAtype::intHash2varhash(const QHash<quint8, qint64> &hash)
@@ -908,7 +911,7 @@ int ConvertAtype::percent2lampPowerValue(const int &percent)
 
 int ConvertAtype::lampPowerValue2percent(const int &lampPowerValue)
 {
-    return (lampPowerValue * 100)/254;
+    return qRound((qreal(lampPowerValue) * 100.0)/254.0);
 }
 
 //-------------------------------------------------------------------------------
@@ -996,6 +999,49 @@ QStringList ConvertAtype::replaceKeyInList(const QStringList &listIpSource, cons
 {
     return replaceKeyInList(listIpSource, key, addList.join("\n"));
 
+}
+
+int ConvertAtype::daliPwr2linearPercents(const int &daliPwrPercents)
+{
+    if(daliPwrPercents < 1)
+        return 0;
+
+    const qreal refpower = 100.0;
+
+    for(int i = 1; i < 101; i++){
+        const int linearPwrPercents = i;
+        const int calcdalipwr = linearPwr2daliPwrInt(percent2lampPowerValue(linearPwrPercents), refpower);
+        if(calcdalipwr >= daliPwrPercents)
+            return linearPwrPercents;
+    }
+
+    return 0;
+
+}
+
+qreal ConvertAtype::linearPwr2daliPwr(const int &linearPower, const qreal &refpower)
+{
+
+    if(linearPower < 1)
+        return 0.0;
+
+
+    const qreal pwrvalue = qreal(linearPower);
+//X(n)=((B32-1)/(253/3)) + (254-B32)/150 + POW( ((254-B32)/400);2)
+//=POW(10;H50)*78/1000
+    const qreal xn = ((pwrvalue - 1.0) / (253.0/3.0)) + (254.0 - pwrvalue)/150.0 + qPow(((254.0 - pwrvalue)/400), 2);
+    const qreal powerWt = qPow(10, xn) * refpower * 0.001;
+
+
+    return powerWt;
+
+}
+
+//-------------------------------------------------------------------------------
+
+int ConvertAtype::linearPwr2daliPwrInt(const int &linearPower, const qreal &refpower)
+{
+    return qRound(linearPwr2daliPwr(linearPower, refpower));
 }
 
 //-------------------------------------------------------------------------------

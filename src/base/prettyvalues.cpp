@@ -460,4 +460,5 @@ QString PrettyValues::getPrettyIfaceName(const QVariantHash &h)
     return s;
 }
 
+
 //--------------------------------------------------------------
