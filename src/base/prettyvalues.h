@@ -76,6 +76,9 @@ public:
      static QString getPrettyIfaceName(const QVariantHash &h);
 
 
+     static QString normalizeStr(const qreal &value, const int &decimalPosition, const bool &useDecimalPoint);
+     static QString checkDecimalSeparator(const QString &valuestr, const bool &useDecimalPoint);
+
 };
 
 #endif // PRETTYVALUES_H

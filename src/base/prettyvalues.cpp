@@ -98,10 +98,10 @@ QString PrettyValues::prettyTimeValueExt(const bool &addmsec, QString &f, qint64
     QString s = "";
 
     QString prependformat;
-    if(msecmynulo >= 126230400000){ //greater or equal 4 years
+    if(msecmynulo >= 31557600000){ //1 year 126230400000){ //greater or equal 4 years
         prependformat.append(QObject::tr("y' "));
-        s.append(QString::number( (msecmynulo/126230400000) * 4 ) + "' ");
-        msecmynulo %= 126230400000;
+        s.append(QString::number( (msecmynulo/31557600000) ) + "' ");
+        msecmynulo %= 31557600000;
     }
 
     if(msecmynulo >= 86400000){ //1 day
@@ -458,6 +458,29 @@ QString PrettyValues::getPrettyIfaceName(const QVariantHash &h)
     case IFACECONNTYPE_UART     : s = QObject::tr("Serial Port '%1'").arg(h.value(h.value("uartManual").toBool() ? "lastUart" : "defUart").toString() ); if(!h.value("uartManual").toBool()){ s.prepend("<b>"); s.append("</b>");} break;
     }
     return s;
+}
+
+QString PrettyValues::normalizeStr(const qreal &value, const int &decimalPosition, const bool &useDecimalPoint)
+{
+    const QString str = (decimalPosition >= 0) ?
+                QString::number(value, 'f', decimalPosition) :
+                QString::number(value);
+
+
+    return checkDecimalSeparator(str, useDecimalPoint);
+}
+
+QString PrettyValues::checkDecimalSeparator(const QString &valuestr, const bool &useDecimalPoint)
+{
+    QString str = valuestr;
+    if(useDecimalPoint){
+        if(str.contains(","))
+            str = str.replace(",", ".");
+    }else{
+        if(str.contains("."))
+            str = str.replace(".", ",");
+    }
+    return str;
 }
 
 

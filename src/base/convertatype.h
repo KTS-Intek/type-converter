@@ -113,6 +113,8 @@ public:
 
     static QByteArray bitArrToByteArr(const QBitArray &bitArr, const bool &toHex);
 
+    static quint8 bitArrToUint8(const QBitArray &bitArr);
+
     static  QBitArray byteArrayToBitArray(const QByteArray &byteArr);
 
     static QDateTime tableName2DateTimeUTC(const QString &tableName, const qint32 addDays = 0) ;
@@ -125,6 +127,8 @@ public:
     static QString uint8list2line(const QList<quint8> &meterMess, int startIndx, const int &len);
 
     static QString uint8list2str(const QList<quint8> &meterMess, int startIndx, const int &len);
+
+    static QString uint8list2strViceVersa(const QList<quint8> &meterMess, int startIndx, const int &len);
 
     static QByteArray uint8list2strH(const QList<quint8> &meterMess, int startIndx, const int &len);
 
@@ -183,6 +187,13 @@ public:
     static qreal linearPwr2daliPwr(const int &linearPower, const qreal &refpower);
 
     static int linearPwr2daliPwrInt(const int &linearPower, const qreal &refpower);
+
+
+    static QByteArray uint8list2array(const QList<quint8> &meterMess, int startIndx, const int &len);
+
+    static QList<quint8> convertArray2uint8list(const QByteArray &arr);
+
+    static QList<quint8> convertNumber2uint8list(const quint64 &number, const int &byteslen);
 
 
 };

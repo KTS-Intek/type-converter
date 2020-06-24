@@ -596,6 +596,13 @@ QByteArray ConvertAtype::bitArrToByteArr(const QBitArray &bitArr, const bool &to
 
 //-------------------------------------------------------------------------------
 
+quint8 ConvertAtype::bitArrToUint8(const QBitArray &bitArr)
+{
+    return quint8(bitArrToByteArr(bitArr, false).at(0));
+}
+
+//-------------------------------------------------------------------------------
+
 QBitArray ConvertAtype::byteArrayToBitArray(const QByteArray &byteArr)
 {
     const int iMax = byteArr.size();
@@ -670,8 +677,22 @@ QString ConvertAtype::uint8list2str(const QList<quint8> &meterMess, int startInd
     const int meterMessS = meterMess.size();
     if(meterMessS > startIndx){
         QByteArray arr;
-        for(int iMax = len + startIndx ; startIndx < meterMessS && startIndx < iMax; startIndx++)
+        for(int iMax = len + startIndx , bytes = 0; startIndx < meterMessS && startIndx < iMax && bytes < 8; startIndx++, bytes++)
             arr.append( QByteArray::number(meterMess.at(startIndx), 16).rightJustified(2, '0') );
+
+        retVal = QString::number(arr.toULongLong(nullptr, 16));//8 bytes is the maximum
+    }
+    return retVal;
+}
+
+QString ConvertAtype::uint8list2strViceVersa(const QList<quint8> &meterMess, int startIndx, const int &len)
+{
+    QString retVal;
+    const int meterMessS = meterMess.size();
+    if(meterMessS > startIndx){
+        QByteArray arr;
+        for(int iMax = len + startIndx , bytes = 0; startIndx < meterMessS && startIndx < iMax && bytes < 8; startIndx++, bytes++)
+            arr.prepend(QByteArray::number(meterMess.at(startIndx), 16).rightJustified(2, '0') );
 
         retVal = QString::number(arr.toULongLong(nullptr, 16));//8 bytes is the maximum
     }
@@ -1042,6 +1063,40 @@ qreal ConvertAtype::linearPwr2daliPwr(const int &linearPower, const qreal &refpo
 int ConvertAtype::linearPwr2daliPwrInt(const int &linearPower, const qreal &refpower)
 {
     return qRound(linearPwr2daliPwr(linearPower, refpower));
+}
+
+//-------------------------------------------------------------------------------
+
+QByteArray ConvertAtype::uint8list2array(const QList<quint8> &meterMess, int startIndx, const int &len)
+{
+    const int meterMessS = meterMess.size();
+    QByteArray arr;
+
+    if(meterMessS > startIndx){
+        for(int iMax = len + startIndx ; startIndx < meterMessS && startIndx < iMax; startIndx++)
+            arr.append(meterMess.at(startIndx));
+    }
+    return arr;
+}
+
+QList<quint8> ConvertAtype::convertArray2uint8list(const QByteArray &arr)
+{
+    QList<quint8> l;
+    for(int i = 0, imax = arr.length(); i < imax; i++)
+        l.append(arr.at(i));
+    return l;
+}
+
+//-------------------------------------------------------------------------------
+
+QList<quint8> ConvertAtype::convertNumber2uint8list(const quint64 &number, const int &byteslen)
+{
+    QByteArray arr;
+    arr.setNum(number, 16);
+    arr = arr.rightJustified(byteslen * 2, '0');
+
+    arr = QByteArray::fromHex(arr);
+    return convertArray2uint8list(arr);
 }
 
 //-------------------------------------------------------------------------------

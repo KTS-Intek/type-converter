@@ -43,6 +43,12 @@ void AES128_ECB_encrypt(uint8_t* input, const uint8_t* key, uint8_t *output);
 QByteArray aes128_ecb_encrtypt(const QByteArray &arrEncr, const QByteArray &arrKey);
 QByteArray aes128_ecb_decrtypt(const QByteArray &arrDecr, const QByteArray &arrKey);
 
+
+QByteArray aes128_ecb_encrtyptwithpadding(const QByteArray &arrEncr, const QByteArray &arrKey);
+
+QByteArray aes128_ecb_decrtyptwithpadding(const QByteArray &arrDecr, const QByteArray &arrKey);
+
+
 QList<quint8> aes128_ecb_encrtypt(const QList<quint8> &listEncr, const QByteArray &arrKey);
 QList<quint8> aes128_ecb_decrtypt(const QList<quint8> &listDecr, const QByteArray &arrKey);
 

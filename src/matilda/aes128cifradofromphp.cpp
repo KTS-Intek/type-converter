@@ -532,6 +532,53 @@ QByteArray AES128CifradoFromPhp::aes128_ecb_decrtypt(const QByteArray &arrDecr, 
 
     return retArr;
 }
+
+//-----------------------------------------------------------------------------
+
+QByteArray AES128CifradoFromPhp::aes128_ecb_encrtyptwithpadding(const QByteArray &arrEncr, const QByteArray &arrKey)
+{
+    QByteArray writeArr;
+    if(true){
+        QDataStream stream(&writeArr, QIODevice::WriteOnly);
+        stream.setVersion(QDataStream::Qt_5_6);
+        stream << (quint64)arrEncr.size();
+        stream << arrEncr;
+    }
+    quint64 len = writeArr.length();
+
+    const QByteArray paddbyte = writeArr.right(1);
+
+    for(int i = 0; i < 10000 && ((len + i)%16) != 0; i++)
+        writeArr.append(paddbyte);
+
+    return aes128_ecb_encrtypt(writeArr, arrKey);
+}
+//-----------------------------------------------------------------------------
+
+QByteArray AES128CifradoFromPhp::aes128_ecb_decrtyptwithpadding(const QByteArray &arrDecr, const QByteArray &arrKey)
+{
+
+    QByteArray arr = aes128_ecb_decrtypt(arrDecr, arrKey);
+    if(arr.isEmpty())
+        return arr;
+
+
+    quint64 outlen = 0;
+    QByteArray outarr;
+    if(true){
+        QDataStream stream(&arr, QIODevice::ReadOnly);
+        stream.setVersion(QDataStream::Qt_5_6);
+        stream >> outlen >> outarr;
+    }
+
+    if(quint64(outarr.length()) != outlen){
+        return QByteArray();
+    }
+
+
+
+    return outarr;
+}
 //===================================================================================================================================
 QList<quint8> AES128CifradoFromPhp::aes128_ecb_encrtypt(const QList<quint8> &listEncr, const QByteArray &arrKey)
 {
