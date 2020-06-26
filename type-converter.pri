@@ -87,7 +87,9 @@ HEADERS += \
     $$PWD/src/base/valuevalidator.h \
     $$PWD/src/matilda/aes128cifradofromphp.h \
     $$PWD/src/base/standardmessages.h \
-    $$PWD/src/base/commandlinedecoder.h
+    $$PWD/src/base/commandlinedecoder.h \
+    $$PWD/src/shared/gsmnotificationtypes.h \
+    $$PWD/src/shared/prettygsmhl8518values.h
 
 
 SOURCES += \
@@ -96,5 +98,6 @@ SOURCES += \
     $$PWD/src/base/valuevalidator.cpp \
     $$PWD/src/matilda/aes128cifradofromphp.cpp \
     $$PWD/src/base/standardmessages.cpp \
-    $$PWD/src/base/commandlinedecoder.cpp
+    $$PWD/src/base/commandlinedecoder.cpp \
+    $$PWD/src/shared/prettygsmhl8518values.cpp
 
