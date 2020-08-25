@@ -181,8 +181,16 @@ QString PrettyValues::getTableName4poll(const QDateTime &dtPoll, const quint8 &p
     case POLL_CODE_READ_POWER           :
     case POLL_CODE_READ_VOLTAGE         :
     case POLL_CODE_READ_TOTAL           : tableName = dtPoll.toUTC().toString("yyyy_MM_dd_hh_mm"); break;
+
+
+
+
     default:{
-        tableName = dtPoll.toUTC().toString("yyyy_MM_dd_hh_mm");
+
+        if(pollCode < POLL_CODE_READ_METER_LOGBOOK)
+            tableName = QString("%1_00_00").arg(dtPoll.toUTC().toString("yyyy_MM_dd"));//the beginning of the day
+        else
+            tableName = dtPoll.toUTC().toString("yyyy_MM_dd_hh_mm");
         //        tableName.clear();
         break;}
 

@@ -87,6 +87,7 @@ public:
     static QList<int> strList2intList(const QStringList &sl);
 
     static QList<int> strList2intList(const QStringList &sl, bool &ok);
+    static QList<int> strList2intListExt(const QStringList &sl, const bool &ignoreerrors, bool &ok);
 
     static QList<quint32> strList2uint32list(const QStringList &sl, bool &ok, const int &base);
 
@@ -171,6 +172,9 @@ public:
     static QStringList qslFromHash(const QHash<QString,QString> &h, const QString &separ, QList<QString> lk = QList<QString>());
 
     static QHash<QString,QString> machine2human(const QStringList &machineList, const QStringList &human);
+
+
+    static QHash<QString,QString> strHashFromQslSmpl(const QStringList &l, const QString &separ);
 
     static QHash<QString,QString> strHashFromQsl(const QStringList &l, const QString &separ, QList<QString> &lk, const int key = 0, const int val = 1, const bool oneMode = true);
 

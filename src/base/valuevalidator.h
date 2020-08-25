@@ -49,6 +49,7 @@ public:
 
     static int getIntValFromList(const QStringList &list, const QString &key, const int &defRetVal);
 
+    static int getIntValFromListExt(const QStringList &list, const QString &key, const int &defRetVal, const int &minval, const int &maxval);
 
     static bool urlIsValid(const QString &strUrl);
 

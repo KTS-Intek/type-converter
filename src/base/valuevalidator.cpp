@@ -198,16 +198,24 @@ QTime ValueValidator::checkTimeIsGood(const QTime &t, const QTime &deftime, bool
 
 int ValueValidator::getIntValFromList(const QStringList &list, const QString &key, const int &defRetVal)
 {
+   return getIntValFromListExt(list, key, defRetVal, -0xFFFF, 0xFFFF );
+}
+//--------------------------------------------------------------
+int ValueValidator::getIntValFromListExt(const QStringList &list, const QString &key, const int &defRetVal, const int &minval, const int &maxval)
+{
     for(int i = 0, iMax = list.size(), len = key.length(); i < iMax; i++){
         if(list.at(i).left(len) == key){
             bool ok;
-            int retVal = list.at(i).mid(len).toInt(&ok);
-            if(ok)
-                return retVal;
+            const int retVal = list.at(i).mid(len).toInt(&ok);
+            if(ok){                
+                return getCorrectValueSigned(retVal, maxval, minval);
+
+            }
 
         }
     }
     return defRetVal;
+
 }
 //--------------------------------------------------------------
 bool ValueValidator::urlIsValid(const QString &strUrl)

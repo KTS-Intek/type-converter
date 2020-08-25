@@ -436,11 +436,20 @@ QList<int> ConvertAtype::strList2intList(const QStringList &sl){
 //-------------------------------------------------------------------------------
 
 QList<int> ConvertAtype::strList2intList(const QStringList &sl, bool &ok){
+
+    return strList2intListExt(sl, false, ok);
+}
+
+//-------------------------------------------------------------------------------
+
+QList<int> ConvertAtype::strList2intListExt(const QStringList &sl, const bool &ignoreerrors, bool &ok)
+{
+
     ok = true;
     QList<int> l;
     for(int i = 0, iMax = sl.size(); ok && i < iMax; i++)
         l.append(sl.at(i).toInt(&ok));
-    if(!ok && !l.isEmpty())
+    if(!ignoreerrors && !ok && !l.isEmpty())
         l.removeLast();
     return l;
 }
@@ -962,15 +971,27 @@ QHash<QString, QString> ConvertAtype::machine2human(const QStringList &machineLi
 //-------------------------------------------------------------------------------
 
 
+QHash<QString, QString> ConvertAtype::strHashFromQslSmpl(const QStringList &l, const QString &separ)
+{
+    QList<QString> lk;
+    return strHashFromQsl(l, separ, lk, 0, 1, true);
+}
+
+//-------------------------------------------------------------------------------
+
+
 QHash<QString, QString> ConvertAtype::strHashFromQsl(const QStringList &l, const QString &separ, QList<QString> &lk, const int key, const int val, const bool oneMode)
 {
+    //key - key pos
+    //val - value pos in the list
+
     QHash<QString,QString> h;
     lk.clear();
     for(int i = 0, iMax = l.size(); i < iMax; i++){
         const QStringList ll = l.at(i).split(separ);
         if(ll.isEmpty())
             continue;
-        int s = ll.size();
+        const int s = ll.size();
         if(s <= key || s <= val)
             continue;
 
