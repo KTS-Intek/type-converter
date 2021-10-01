@@ -117,32 +117,37 @@ public:
     static quint8 bitArrToUint8(const QBitArray &bitArr);
 
     static  QBitArray byteArrayToBitArray(const QByteArray &byteArr);
+    static  QBitArray int32ToBitArray(const qint32 &value);
 
     static QDateTime tableName2DateTimeUTC(const QString &tableName, const qint32 addDays = 0) ;
 
 
     static QList<quint8> strList2uint8ListOmmit(const QStringList &l, const bool ommitBadData = true);
 
-    static int uint8list2int(const QList<quint8> &meterMess, int startIndx, const int &len);
+    static int uint8list2int(const QList<quint8> &meterMessageList, int startIndx, const int &len);
 
-    static QString uint8list2line(const QList<quint8> &meterMess, int startIndx, const int &len);
+    static quint32 uint8list2uint32littleEndian(const QList<quint8> &meterMessageList, int startIndx, const int &len);
 
-    static QString uint8list2str(const QList<quint8> &meterMess, int startIndx, const int &len);
 
-    static QString uint8list2strViceVersa(const QList<quint8> &meterMess, int startIndx, const int &len);
 
-    static QByteArray uint8list2strH(const QList<quint8> &meterMess, int startIndx, const int &len);
+    static QString uint8list2line(const QList<quint8> &meterMessageList, int startIndx, const int &len);
+
+    static QString uint8list2str(const QList<quint8> &meterMessageList, int startIndx, const int &len);
+
+    static QString uint8list2strViceVersa(const QList<quint8> &meterMessageList, int startIndx, const int &len);
+
+    static QByteArray uint8list2strH(const QList<quint8> &meterMessageList, int startIndx, const int &len);
 
     static QByteArray convertData7ToData8(const QByteArray &readArr);
 
     static QByteArray convertData8ToData7(const QByteArray &writeArr);
 
-    static QByteArray listUint8mid2arr(const QList<quint8> &meterMess, const int &startPos, const int &len);
+    static QByteArray listUint8mid2arr(const QList<quint8> &meterMessageList, const int &startPos, const int &len);
 
-    static QByteArray listUint8mid2arrMess(const QList<quint8> &meterMess, const int &startPos, const int &len);
+    static QByteArray listUint8mid2arrMessage(const QList<quint8> &meterMessageList, const int &startPos, const int &len);
 
 
-    static qreal listUint8mid2real(const QList<quint8> &meterMess, const int &startPos, const int &len, const int &dotPos, const int isUnsigned, bool &ok);
+    static qreal listUint8mid2real(const QList<quint8> &meterMessageList, const int &startPos, const int &len, const int &dotPos, const int isUnsigned, bool &ok);
 
 
     static QByteArray intVal2arrH(const int &val, const int &rightJustif);
@@ -179,7 +184,10 @@ public:
     static QHash<QString,QString> strHashFromQsl(const QStringList &l, const QString &separ, QList<QString> &lk, const int key = 0, const int val = 1, const bool oneMode = true);
 
     //fireflyhelper.h
-    static QPointF coordinatesFromStr(const QString &s, bool &ok);
+    static QPointF coordinateFromStr(const QString &s, bool &ok);
+
+    static QString coordinateToStr(const QPointF &coordinate);
+
 
 //stringlisthelper
     static QStringList replaceKeyInList(const QStringList &listIp, const QString &key, const QString &addIp);
@@ -193,7 +201,7 @@ public:
     static int linearPwr2daliPwrInt(const int &linearPower, const qreal &refpower);
 
 
-    static QByteArray uint8list2array(const QList<quint8> &meterMess, int startIndx, const int &len);
+    static QByteArray uint8list2array(const QList<quint8> &meterMessageList, int startIndx, const int &len);
 
     static QList<quint8> convertArray2uint8list(const QByteArray &arr);
 

@@ -11,7 +11,7 @@ public:
 
     static int checkMessSize(const QVariant s_data, const quint16 s_command);
 
-    static qint64 chkMessSize(const QVariant &s_data);
+    static qint64 chkMessageSize(const QVariant &s_data);
 
 };
 

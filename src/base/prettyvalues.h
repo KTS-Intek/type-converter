@@ -25,7 +25,7 @@ public:
     static QString prettyTimeValueExt(const bool &addmsec, QString &f, qint64 msecmynulo);
 
 
-    static QString tablenameEnd4pollCode(const quint8 &pollCode);
+//    static QString tablenameEnd4pollCode(const quint8 &pollCode);
 
 
     static QDateTime tableName2DateTime(const QString &tableName, const qint32 addDays = 0, const bool useLocal = false);
@@ -78,6 +78,8 @@ public:
 
      static QString normalizeStr(const qreal &value, const int &decimalPosition, const bool &useDecimalPoint);
      static QString checkDecimalSeparator(const QString &valuestr, const bool &useDecimalPoint);
+
+     static QString prettyLongTextView(QString s);
 
 };
 

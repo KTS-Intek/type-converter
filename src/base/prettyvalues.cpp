@@ -134,16 +134,16 @@ QString PrettyValues::prettyTimeValueExt(const bool &addmsec, QString &f, qint64
 
 //------------------------------------------------------------------------------------
 
-QString PrettyValues::tablenameEnd4pollCode(const quint8 &pollCode)
-{
-    if(pollCode == POLL_CODE_READ_TOTAL || pollCode == POLL_CODE_READ_POWER || pollCode == POLL_CODE_READ_VOLTAGE || pollCode == POLL_CODE_READ_METER_LOGBOOK ||
-            pollCode == POLL_CODE_READ_METER_STATE ||
-            pollCode == POLL_CODE_WTR_TOTAL || pollCode == POLL_CODE_WTR_PERIOD || pollCode == POLL_CODE_WTR_INSTANT_VLS || pollCode == POLL_CODE_WTR_METER_LOGBOOK ||
-            pollCode == POLL_CODE_WTR_METER_STATE)
-        return "_00_000";//_ss_zzz
+//QString PrettyValues::tablenameEnd4pollCode(const quint8 &pollCode)
+//{
+//    if(pollCode == POLL_CODE_READ_TOTAL || pollCode == POLL_CODE_READ_POWER || pollCode == POLL_CODE_READ_VOLTAGE || pollCode == POLL_CODE_READ_METER_LOGBOOK ||
+//            pollCode == POLL_CODE_READ_METER_STATE ||
+//            pollCode == POLL_CODE_WTR_TOTAL || pollCode == POLL_CODE_WTR_PERIOD || pollCode == POLL_CODE_WTR_INSTANT_VLS || pollCode == POLL_CODE_WTR_METER_LOGBOOK ||
+//            pollCode == POLL_CODE_WTR_METER_STATE)
+//        return "_00_000";//_ss_zzz
 
-    return "_59_999";
-}
+//    return "_59_999";
+//}
 
 //------------------------------------------------------------------------------------
 
@@ -489,6 +489,20 @@ QString PrettyValues::checkDecimalSeparator(const QString &valuestr, const bool 
             str = str.replace(".", ",");
     }
     return str;
+}
+
+QString PrettyValues::prettyLongTextView(QString s)
+{
+    //former prettyTxtView
+    s = s.remove(" ");
+    QString r = s.right(4);
+    s.chop(3);
+
+    while(!s.isEmpty()){
+        r.prepend(s.right(4) + " ");
+        s.chop(4);
+    }
+    return r;
 }
 
 

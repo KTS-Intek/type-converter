@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QStringList>
+#include <QDateTime>
 
 class IfaceHelper : public QObject
 {
@@ -44,6 +45,7 @@ signals:
 
 public slots:
     void showHexDump(QByteArray arr, QString ifaceName, bool isRead);
+    void showHexDumpExt(QDateTime dt, QByteArray arr, QString ifaceName, bool isRead);
 
     void giveMeYourCache();
 

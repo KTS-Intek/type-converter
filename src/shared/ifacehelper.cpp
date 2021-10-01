@@ -59,7 +59,13 @@ IfaceHelper::IffaceLogOut IfaceHelper::getIffaceLogOut(const QTime &time, const 
 
 void IfaceHelper::showHexDump(QByteArray arr, QString ifaceName, bool isRead)
 {
-    const IffaceLogOut iface = getIffaceLogOut(QTime::currentTime(), arr, ifaceName, isRead);
+    showHexDumpExt(QDateTime::currentDateTime(), arr, ifaceName, isRead);
+
+}
+
+void IfaceHelper::showHexDumpExt(QDateTime dt, QByteArray arr, QString ifaceName, bool isRead)
+{
+    const IffaceLogOut iface = getIffaceLogOut(dt.time(), arr, ifaceName, isRead);
 
     for(int i = 0, imax = iface.ifaceLogStr.size(); i < imax; i++){
         emit ifaceLogArrLine(iface.ifaceLogArrLine.at(i));
@@ -73,7 +79,6 @@ void IfaceHelper::showHexDump(QByteArray arr, QString ifaceName, bool isRead)
     emit ifaceLogArrAll(iface.ifaceLogArrAll);
     if(!iface.ifaceLogPrettyAll.isEmpty())
         emit ifaceLogPrettyAll(iface.ifaceLogPrettyAll);
-
 }
 
 void IfaceHelper::giveMeYourCache()

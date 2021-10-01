@@ -2,7 +2,7 @@
 
 //---------------------------------------------------------------------------------
 
-int CommandLineDecoder::valFromArgs(const QStringList &listArgs, const QString &keyStr, const int minVal, const int maxVal, bool &valGood, QString &mess)
+int CommandLineDecoder::valFromArgs(const QStringList &listArgs, const QString &keyStr, const int minVal, const int maxVal, bool &valGood, QString &messageStrr)
 {
     int i = listArgs.indexOf(keyStr) + 1;
     valGood = false;
@@ -15,7 +15,7 @@ int CommandLineDecoder::valFromArgs(const QStringList &listArgs, const QString &
             valGood = false;
     }
     if(!valGood){
-        mess = "Invalid argument " + keyStr;
+        messageStrr = "Invalid argument " + keyStr;
     }
 
     return retVal;
@@ -23,7 +23,7 @@ int CommandLineDecoder::valFromArgs(const QStringList &listArgs, const QString &
 
 //---------------------------------------------------------------------------------
 
-int CommandLineDecoder::valFromArgs(const QStringList &listArgs, const QString &keyStr, const QList<int> allowVal, bool &valGood, QString &mess)
+int CommandLineDecoder::valFromArgs(const QStringList &listArgs, const QString &keyStr, const QList<int> allowVal, bool &valGood, QString &messageStrr)
 {
     int i = listArgs.indexOf(keyStr) + 1;
     valGood = false;
@@ -34,7 +34,7 @@ int CommandLineDecoder::valFromArgs(const QStringList &listArgs, const QString &
             valGood = false;
     }
     if(!valGood){
-        mess = "Invalid argument " + keyStr;
+        messageStrr = "Invalid argument " + keyStr;
     }
 
     return retVal;
@@ -42,7 +42,7 @@ int CommandLineDecoder::valFromArgs(const QStringList &listArgs, const QString &
 
 //---------------------------------------------------------------------------------
 
-QString CommandLineDecoder::valFromArgs(const QStringList &listArgs, const QString &keyStr, bool &valGood, QString &mess)
+QString CommandLineDecoder::valFromArgs(const QStringList &listArgs, const QString &keyStr, bool &valGood, QString &messageStrr)
 {
     int i = listArgs.indexOf(keyStr) + 1;
     valGood = false;
@@ -52,14 +52,14 @@ QString CommandLineDecoder::valFromArgs(const QStringList &listArgs, const QStri
         valGood = true;
     }
     if(!valGood)
-        mess = "Invalid argument " + keyStr;
+        messageStrr = "Invalid argument " + keyStr;
 
     return retVal;
 }
 
 //---------------------------------------------------------------------------------
 
-QString CommandLineDecoder::valFromArgs(const QStringList &listArgs, const QString &keyStr, const QStringList allowVal, bool &valGood, QString &mess)
+QString CommandLineDecoder::valFromArgs(const QStringList &listArgs, const QString &keyStr, const QStringList allowVal, bool &valGood, QString &messageStrr)
 {
     int i = listArgs.indexOf(keyStr) + 1;
     valGood = false;
@@ -69,7 +69,7 @@ QString CommandLineDecoder::valFromArgs(const QStringList &listArgs, const QStri
         valGood = allowVal.contains(retVal);
     }
     if(!valGood){
-        mess = "Invalid argument " + keyStr;
+        messageStrr = "Invalid argument " + keyStr;
     }
     return retVal;
 }

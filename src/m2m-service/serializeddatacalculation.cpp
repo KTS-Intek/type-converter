@@ -24,15 +24,15 @@ int SerializedDataCalculation::checkMessSize(const QVariant s_data, const quint1
         qDebug() << "===blSize " << blSize << blSizeOld << s_command;
         return block.size();
 
-    }else{
+    }
          blSizeOld = blSize;
         qDebug() << "===blSize " << block.size() / 6   << blSizeOld << s_command;
 
         return block.size() / 6;
-    }
+
 }
 
-qint64 SerializedDataCalculation::chkMessSize(const QVariant &s_data)
+qint64 SerializedDataCalculation::chkMessageSize(const QVariant &s_data)
 {
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);

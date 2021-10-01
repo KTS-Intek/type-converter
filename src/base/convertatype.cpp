@@ -626,6 +626,14 @@ QBitArray ConvertAtype::byteArrayToBitArray(const QByteArray &byteArr)
 
 //-------------------------------------------------------------------------------
 
+QBitArray ConvertAtype::int32ToBitArray(const qint32 &value)
+{
+    return byteArrayToBitArray(QByteArray::fromHex(QByteArray::number(value, 16)));
+
+}
+
+//-------------------------------------------------------------------------------
+
 QDateTime ConvertAtype::tableName2DateTimeUTC(const QString &tableName, const qint32 addDays)
 {
     if(tableName.mid(4,1) != "_")
@@ -651,14 +659,14 @@ QList<quint8> ConvertAtype::strList2uint8ListOmmit(const QStringList &l, const b
 
 //-------------------------------------------------------------------------------
 
-int ConvertAtype::uint8list2int(const QList<quint8> &meterMess, int startIndx, const int &len)
+int ConvertAtype::uint8list2int(const QList<quint8> &meterMessageList, int startIndx, const int &len)
 {
     int retVal = 0;
-    const int meterMessS = meterMess.size();
-    if(meterMessS > startIndx){
+    const int meterMessageListS = meterMessageList.size();
+    if(meterMessageListS > startIndx){
         QByteArray arr;
-       for(int iMax = len + startIndx ; startIndx < meterMessS && startIndx < iMax; startIndx++)
-            arr.append( QByteArray::number(meterMess.at(startIndx), 16).rightJustified(2, '0') );
+       for(int iMax = len + startIndx ; startIndx < meterMessageListS && startIndx < iMax; startIndx++)
+            arr.append( QByteArray::number(meterMessageList.at(startIndx), 16).rightJustified(2, '0') );
 
         retVal = int(arr.toUInt(nullptr, 16));
     }
@@ -667,41 +675,57 @@ int ConvertAtype::uint8list2int(const QList<quint8> &meterMess, int startIndx, c
 
 //-------------------------------------------------------------------------------
 
-QString ConvertAtype::uint8list2line(const QList<quint8> &meterMess, int startIndx, const int &len)
+quint32 ConvertAtype::uint8list2uint32littleEndian(const QList<quint8> &meterMessageList, int startIndx, const int &len)
+{
+    quint32 retVal = 0;
+    const int meterMessageListS = meterMessageList.size();
+    if(meterMessageListS > startIndx){
+        QByteArray arr;
+       for(int iMax = len + startIndx ; startIndx < meterMessageListS && startIndx < iMax; startIndx++)
+            arr.prepend( QByteArray::number(meterMessageList.at(startIndx), 16).rightJustified(2, '0') );
+
+        retVal = int(arr.toUInt(nullptr, 16));
+    }
+    return retVal;
+}
+
+//-------------------------------------------------------------------------------
+
+QString ConvertAtype::uint8list2line(const QList<quint8> &meterMessageList, int startIndx, const int &len)
 {
     QByteArray retVal;
-    const int meterMessS = meterMess.size();
-    if(meterMessS > startIndx){
-        for(int iMax = len + startIndx ; startIndx < meterMessS && startIndx < iMax; startIndx++)
-            retVal.append(meterMess.at(startIndx));
+    const int meterMessageListS = meterMessageList.size();
+    if(meterMessageListS > startIndx){
+        for(int iMax = len + startIndx ; startIndx < meterMessageListS && startIndx < iMax; startIndx++)
+            retVal.append(meterMessageList.at(startIndx));
     }
     return QString(retVal);
 }
 
 //-------------------------------------------------------------------------------
 
-QString ConvertAtype::uint8list2str(const QList<quint8> &meterMess, int startIndx, const int &len)
+QString ConvertAtype::uint8list2str(const QList<quint8> &meterMessageList, int startIndx, const int &len)
 {
     QString retVal;
-    const int meterMessS = meterMess.size();
-    if(meterMessS > startIndx){
+    const int meterMessageListS = meterMessageList.size();
+    if(meterMessageListS > startIndx){
         QByteArray arr;
-        for(int iMax = len + startIndx , bytes = 0; startIndx < meterMessS && startIndx < iMax && bytes < 8; startIndx++, bytes++)
-            arr.append( QByteArray::number(meterMess.at(startIndx), 16).rightJustified(2, '0') );
+        for(int iMax = len + startIndx , bytes = 0; startIndx < meterMessageListS && startIndx < iMax && bytes < 8; startIndx++, bytes++)
+            arr.append( QByteArray::number(meterMessageList.at(startIndx), 16).rightJustified(2, '0') );
 
         retVal = QString::number(arr.toULongLong(nullptr, 16));//8 bytes is the maximum
     }
     return retVal;
 }
 
-QString ConvertAtype::uint8list2strViceVersa(const QList<quint8> &meterMess, int startIndx, const int &len)
+QString ConvertAtype::uint8list2strViceVersa(const QList<quint8> &meterMessageList, int startIndx, const int &len)
 {
     QString retVal;
-    const int meterMessS = meterMess.size();
-    if(meterMessS > startIndx){
+    const int meterMessageListS = meterMessageList.size();
+    if(meterMessageListS > startIndx){
         QByteArray arr;
-        for(int iMax = len + startIndx , bytes = 0; startIndx < meterMessS && startIndx < iMax && bytes < 8; startIndx++, bytes++)
-            arr.prepend(QByteArray::number(meterMess.at(startIndx), 16).rightJustified(2, '0') );
+        for(int iMax = len + startIndx , bytes = 0; startIndx < meterMessageListS && startIndx < iMax && bytes < 8; startIndx++, bytes++)
+            arr.prepend(QByteArray::number(meterMessageList.at(startIndx), 16).rightJustified(2, '0') );
 
         retVal = QString::number(arr.toULongLong(nullptr, 16));//8 bytes is the maximum
     }
@@ -710,13 +734,13 @@ QString ConvertAtype::uint8list2strViceVersa(const QList<quint8> &meterMess, int
 
 //-------------------------------------------------------------------------------
 
-QByteArray ConvertAtype::uint8list2strH(const QList<quint8> &meterMess, int startIndx, const int &len)
+QByteArray ConvertAtype::uint8list2strH(const QList<quint8> &meterMessageList, int startIndx, const int &len)
 {
-    const int meterMessS = meterMess.size();
-    if(meterMessS > startIndx){
+    const int meterMessageListS = meterMessageList.size();
+    if(meterMessageListS > startIndx){
         QByteArray arr;
-        for(int iMax = len + startIndx ; startIndx < meterMessS && startIndx < iMax; startIndx++)
-            arr.append( QByteArray::number(meterMess.at(startIndx), 16).rightJustified(2, '0') );
+        for(int iMax = len + startIndx ; startIndx < meterMessageListS && startIndx < iMax; startIndx++)
+            arr.append( QByteArray::number(meterMessageList.at(startIndx), 16).rightJustified(2, '0') );
 
         return arr;
     }
@@ -776,25 +800,25 @@ QByteArray ConvertAtype::convertData8ToData7(const QByteArray &writeArr)
 
 //-------------------------------------------------------------------------------
 
-QByteArray ConvertAtype::listUint8mid2arr(const QList<quint8> &meterMess, const int &startPos, const int &len)
+QByteArray ConvertAtype::listUint8mid2arr(const QList<quint8> &meterMessageList, const int &startPos, const int &len)
 {
-    return QByteArray::number(listUint8mid2arrMess(meterMess, startPos, len).toHex().toULongLong(0, 16)) ;
+    return QByteArray::number(listUint8mid2arrMessage(meterMessageList, startPos, len).toHex().toULongLong(0, 16)) ;
 
 }
 
 //-------------------------------------------------------------------------------
 
-QByteArray ConvertAtype::listUint8mid2arrMess(const QList<quint8> &meterMess, const int &startPos, const int &len)
+QByteArray ConvertAtype::listUint8mid2arrMessage(const QList<quint8> &meterMessageList, const int &startPos, const int &len)
 {
     QByteArray arr;
-    for(int i = startPos, iMax = meterMess.size(), l = 0; i < iMax && l != len; i++, l++)
-        arr.append(meterMess.at(i));
+    for(int i = startPos, iMax = meterMessageList.size(), l = 0; i < iMax && l != len; i++, l++)
+        arr.append(meterMessageList.at(i));
     return arr;
 }
 
 //-------------------------------------------------------------------------------
 
-qreal ConvertAtype::listUint8mid2real(const QList<quint8> &meterMess, const int &startPos, const int &len, const int &dotPos, const int isUnsigned, bool &ok)
+qreal ConvertAtype::listUint8mid2real(const QList<quint8> &meterMessageList, const int &startPos, const int &len, const int &dotPos, const int isUnsigned, bool &ok)
 {
     qreal dilnyk = 1.0;
     for(int i = 0; i < dotPos; i++)
@@ -802,11 +826,11 @@ qreal ConvertAtype::listUint8mid2real(const QList<quint8> &meterMess, const int 
 
     bool ok1, ok2;
 
-//    QByteArray arrh = uint8list2strH(meterMess, startPos, len);
+//    QByteArray arrh = uint8list2strH(meterMessageList, startPos, len);
 
 
-    qint64 valInteger = listUint8mid2arr(meterMess, startPos, len).toLongLong(&ok1);
-    quint32 valUnsignedInteger = listUint8mid2arr(meterMess, startPos, len).toUInt(&ok2);
+    qint64 valInteger = listUint8mid2arr(meterMessageList, startPos, len).toLongLong(&ok1);
+    quint32 valUnsignedInteger = listUint8mid2arr(meterMessageList, startPos, len).toUInt(&ok2);
 
     if(valInteger > 2147483647){
 //        qint64 v = 0xFFFFFFFF;
@@ -821,7 +845,7 @@ qreal ConvertAtype::listUint8mid2real(const QList<quint8> &meterMess, const int 
         val = (qreal)valInteger;
     }
     val /= dilnyk;
-//    (qreal)( (isUnsigned != 0) ? valUnsignedInteger : valInteger) / dilnyk;//  (listUint8mid2arr(meterMess, startPos, len).toDouble(&ok) / dilnyk);
+//    (qreal)( (isUnsigned != 0) ? valUnsignedInteger : valInteger) / dilnyk;//  (listUint8mid2arr(meterMessageList, startPos, len).toDouble(&ok) / dilnyk);
     ok = isUnsigned ? ok2 : ok1;
     return val;
 }
@@ -1003,7 +1027,7 @@ QHash<QString, QString> ConvertAtype::strHashFromQsl(const QStringList &l, const
 
 //-------------------------------------------------------------------------------
 
-QPointF ConvertAtype::coordinatesFromStr(const QString &s, bool &ok)
+QPointF ConvertAtype::coordinateFromStr(const QString &s, bool &ok)
 {
     QStringList l = s.split(",", QString::SkipEmptyParts);
     qreal defLong, defLatitude;
@@ -1020,6 +1044,18 @@ QPointF ConvertAtype::coordinatesFromStr(const QString &s, bool &ok)
     }
     ok = false;
     return QPointF(0,0);
+}
+
+QString ConvertAtype::coordinateToStr(const QPointF &coordinate)
+{
+    if(coordinate.isNull())
+        return QString();
+    //MyGeoConvertHelper::getStrCoordinates(const QGeoCoordinate &c)
+    //    return QString("%1,%2").arg(QString::number(c.latitude(),'f', COORDINATEPRECISION)).arg(QString::number(c.longitude(),'f', COORDINATEPRECISION));
+
+    return QString("%1,%2")
+            .arg(QString::number(coordinate.x(), 'f', 6))
+            .arg(QString::number(coordinate.y(), 'f', 6));
 }
 
 QStringList ConvertAtype::replaceKeyInList(const QStringList &listIp, const QString &key, const QString &addIp)
@@ -1088,14 +1124,14 @@ int ConvertAtype::linearPwr2daliPwrInt(const int &linearPower, const qreal &refp
 
 //-------------------------------------------------------------------------------
 
-QByteArray ConvertAtype::uint8list2array(const QList<quint8> &meterMess, int startIndx, const int &len)
+QByteArray ConvertAtype::uint8list2array(const QList<quint8> &meterMessageList, int startIndx, const int &len)
 {
-    const int meterMessS = meterMess.size();
+    const int meterMessageListS = meterMessageList.size();
     QByteArray arr;
 
-    if(meterMessS > startIndx){
-        for(int iMax = len + startIndx ; startIndx < meterMessS && startIndx < iMax; startIndx++)
-            arr.append(meterMess.at(startIndx));
+    if(meterMessageListS > startIndx){
+        for(int iMax = len + startIndx ; startIndx < meterMessageListS && startIndx < iMax; startIndx++)
+            arr.append(meterMessageList.at(startIndx));
     }
     return arr;
 }

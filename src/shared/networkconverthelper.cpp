@@ -118,21 +118,21 @@ QStringList NetworkConvertHelper::removeNotAllowedHostAddr(const bool &hasDns, c
 
 //-------------------------------------------------------------------------
 
-bool NetworkConvertHelper::isIpGood(const QString &ip, const QStringList &whitelist)
+bool NetworkConvertHelper::isIpGood(const QString &ip, const QStringList &allowlist)
 {
-    if(whitelist.isEmpty())
+    if(allowlist.isEmpty())
         return true;
 
-    for(int i = 0, imax = whitelist.size(); i < imax; i++){
+    for(int i = 0, imax = allowlist.size(); i < imax; i++){
 
-        const QRegularExpression rx(whitelist.at(i), QRegularExpression::ExtendedPatternSyntaxOption);
+        const QRegularExpression rx(allowlist.at(i), QRegularExpression::ExtendedPatternSyntaxOption);
 
         if(rx.isValid()){
             if(rx.match(ip, 0, QRegularExpression::NormalMatch).hasMatch()){
                 return true;
             }
         }else{
-            if(ip == whitelist.at(i)){
+            if(ip == allowlist.at(i)){
                 return true;
             }
         }
