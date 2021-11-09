@@ -8,8 +8,8 @@ class SerializedDataCalculation
 
 public:
 
-
-    static int checkMessSize(const QVariant s_data, const quint16 s_command);
+//checkMessSize
+    static int checkMessageSize(const QVariant s_data, const quint16 s_command, const bool &verboseMode);
 
     static qint64 chkMessageSize(const QVariant &s_data);
 

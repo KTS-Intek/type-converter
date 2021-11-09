@@ -24,7 +24,7 @@ public:
 
     static QStringList ifconfigOut();
 
-    static bool hasActiveOutConn();
+    static bool hasActiveOutConn(const bool &verboseMode);
 
 
     static IPadd2ifaceName ipAddrVsIfaceName();

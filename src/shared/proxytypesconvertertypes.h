@@ -17,7 +17,7 @@ struct ProxySettStruct
     QString lastUser;
     QString lastPassword;
 
-    ProxySettStruct() : enableProxy(false), proxyType(QNetworkProxy::DefaultProxy) {}
+    ProxySettStruct() : enableProxy(false), proxyType(QNetworkProxy::DefaultProxy), port(0), hasUserAndPassword(false) {}
 
     ProxySettStruct(const bool &enableProxy, const QNetworkProxy::ProxyType &proxyType, const QString &host, const quint16 &port,
                     const bool &hasUserAndPassword, const QString &lastUser, const QString &lastPassword) :

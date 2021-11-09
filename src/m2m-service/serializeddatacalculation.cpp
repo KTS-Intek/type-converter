@@ -6,7 +6,7 @@
 #include "moji_defy.h"
 #include "matildalimits.h"
 
-int SerializedDataCalculation::checkMessSize(const QVariant s_data, const quint16 s_command)
+int SerializedDataCalculation::checkMessageSize(const QVariant s_data, const quint16 s_command, const bool &verboseMode)
 {
     QByteArray block;
     QDataStream out(&block, QIODevice::WriteOnly);
@@ -21,11 +21,13 @@ int SerializedDataCalculation::checkMessSize(const QVariant s_data, const quint1
 
     if(blSize < SETT_MAX_UNCOMPRSS_PACkET_SIZE || s_command == COMMAND_WRITE_UPGRADE || s_command == COMMAND_COMPRESSED_STREAM){
         out << (quint32)(blSize - sizeof(quint32));
+        if(verboseMode)
         qDebug() << "===blSize " << blSize << blSizeOld << s_command;
         return block.size();
 
     }
          blSizeOld = blSize;
+         if(verboseMode)
         qDebug() << "===blSize " << block.size() / 6   << blSizeOld << s_command;
 
         return block.size() / 6;

@@ -27,7 +27,9 @@ class AES128CifradoFromPhp : public QObject
 {
     Q_OBJECT
 public:
-    explicit AES128CifradoFromPhp(QObject *parent = 0);
+    explicit AES128CifradoFromPhp(const bool verboseMode = false, QObject *parent = nullptr);
+
+    bool verboseMode;
 
 signals:
 

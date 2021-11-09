@@ -172,9 +172,9 @@ QStringList MacAddressHelper::ifconfigOut()
 
 //--------------------------------------------------------------------------------------------
 
-bool MacAddressHelper::hasActiveOutConn()
+bool MacAddressHelper::hasActiveOutConn(const bool &verboseMode)
 {
-    const bool verboseMode = false;
+//    const bool verboseMode = false;
     const QList<QNetworkInterface> listIface = QNetworkInterface::allInterfaces();
 
     for(int i = 0, iMax = listIface.size(); i < iMax ; i++){

@@ -435,9 +435,9 @@ static void BlockCopy(uint8_t* output, uint8_t* input)
 //#if defined(ECB) && ECB
 
 //===================================================================================================================================
-AES128CifradoFromPhp::AES128CifradoFromPhp(QObject *parent) : QObject(parent)
+AES128CifradoFromPhp::AES128CifradoFromPhp(const bool verboseMode, QObject *parent) : QObject(parent)
 {
-
+    this->verboseMode = verboseMode;
 }
 //===================================================================================================================================
 void AES128CifradoFromPhp::AES128_ECB_encrypt(uint8_t *input, const uint8_t *key, uint8_t *output)
@@ -456,7 +456,8 @@ void AES128CifradoFromPhp::AES128_ECB_encrypt(uint8_t *input, const uint8_t *key
 QByteArray AES128CifradoFromPhp::aes128_ecb_encrtypt(const QByteArray &arrEncr, const QByteArray &arrKey)
 {
     if(arrEncr.length() % 16 > 0 || arrKey.length() != 16){
-        qDebug() << "if(arrEncr.length() % 16 > 0 || arrKey.length() != 16){ " << arrEncr.length() << arrKey.toHex();
+        if(verboseMode)
+            qDebug() << "if(arrEncr.length() % 16 > 0 || arrKey.length() != 16){ " << arrEncr.length() << arrKey.toHex();
         return "";
     }
 
@@ -466,7 +467,8 @@ QByteArray AES128CifradoFromPhp::aes128_ecb_encrtypt(const QByteArray &arrEncr, 
         bool ok;
         key[j] = arrH.mid(i,2).toUShort(&ok,16);
         if(!ok){
-            qDebug() << "key if(!ok){" << arrH.mid(i,2) << ok;
+            if(verboseMode)
+                qDebug() << "key if(!ok){" << arrH.mid(i,2) << ok;
             return "";
         }
     }
@@ -496,7 +498,8 @@ QByteArray AES128CifradoFromPhp::aes128_ecb_encrtypt(const QByteArray &arrEncr, 
 QByteArray AES128CifradoFromPhp::aes128_ecb_decrtypt(const QByteArray &arrDecr, const QByteArray &arrKey)
 {
     if(arrDecr.length() % 16 > 0 || arrKey.length() != 16){
-        qDebug() << "if(arrDecr.length() % 16 > 0 || arrKey.length() != 16){ " << arrDecr.length() << arrKey.toHex();
+        if(verboseMode)
+            qDebug() << "if(arrDecr.length() % 16 > 0 || arrKey.length() != 16){ " << arrDecr.length() << arrKey.toHex();
         return "";
     }
 
@@ -506,7 +509,8 @@ QByteArray AES128CifradoFromPhp::aes128_ecb_decrtypt(const QByteArray &arrDecr, 
         bool ok;
         key[j] = arrH.mid(i,2).toUShort(&ok,16);
         if(!ok){
-            qDebug() << "key if(!ok){" << arrH.mid(i,2) << ok;
+            if(verboseMode)
+                qDebug() << "key if(!ok){" << arrH.mid(i,2) << ok;
             return "";
         }
     }
@@ -585,7 +589,8 @@ QList<quint8> AES128CifradoFromPhp::aes128_ecb_encrtypt(const QList<quint8> &lis
     QList<quint8> retList;
 
     if(listEncr.length() % 16 > 0 || arrKey.length() != 16){
-        qDebug() << "if(listEncr.length() % 16 > 0 || arrKey.length() != 16){ " << listEncr.length() << arrKey.toHex();
+        if(verboseMode)
+            qDebug() << "if(listEncr.length() % 16 > 0 || arrKey.length() != 16){ " << listEncr.length() << arrKey.toHex();
         return retList;
     }
 
@@ -595,7 +600,8 @@ QList<quint8> AES128CifradoFromPhp::aes128_ecb_encrtypt(const QList<quint8> &lis
         bool ok;
         key[j] = arrH.mid(i,2).toUShort(&ok,16);
         if(!ok){
-            qDebug() << "key if(!ok){" << arrH.mid(i,2) << ok;
+            if(verboseMode)
+                qDebug() << "key if(!ok){" << arrH.mid(i,2) << ok;
             return retList;
         }
     }
@@ -627,7 +633,8 @@ QList<quint8> AES128CifradoFromPhp::aes128_ecb_decrtypt(const QList<quint8> &lis
     QList<quint8> retList;
 
     if(listDecr.length() % 16 > 0 || arrKey.length() != 16){
-        qDebug() << "if(listDecr.length() % 16 > 0 || arrKey.length() != 16){ " << listDecr.length() << arrKey.toHex();
+        if(verboseMode)
+            qDebug() << "if(listDecr.length() % 16 > 0 || arrKey.length() != 16){ " << listDecr.length() << arrKey.toHex();
         return retList;
     }
 
@@ -637,7 +644,8 @@ QList<quint8> AES128CifradoFromPhp::aes128_ecb_decrtypt(const QList<quint8> &lis
         bool ok;
         key[j] = arrH.mid(i,2).toUShort(&ok,16);
         if(!ok){
-            qDebug() << "key if(!ok){" << arrH.mid(i,2) << ok;
+            if(verboseMode)
+                qDebug() << "key if(!ok){" << arrH.mid(i,2) << ok;
             return retList;
         }
     }
