@@ -1043,7 +1043,7 @@ QPointF ConvertAtype::coordinateFromStr(const QString &s, bool &ok)
         return QPointF(defLong, defLatitude);
     }
     ok = false;
-    return QPointF(0,0);
+    return QPointF(46.6860,32.5060);//chornobajivka 0,0);
 }
 
 QString ConvertAtype::coordinateToStr(const QPointF &coordinate)
