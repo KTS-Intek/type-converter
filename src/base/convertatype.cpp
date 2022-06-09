@@ -1029,6 +1029,14 @@ QHash<QString, QString> ConvertAtype::strHashFromQsl(const QStringList &l, const
 
 QPointF ConvertAtype::coordinateFromStr(const QString &s, bool &ok)
 {
+    return coordinateFromStrExt(s, QPointF(46.6860,32.5060), ok );//chornobajivka 0,0);  46.686000,32.506000
+
+}
+
+//-------------------------------------------------------------------------------
+
+QPointF ConvertAtype::coordinateFromStrExt(const QString &s, const QPointF &defPoint, bool &ok)
+{
     QStringList l = s.split(",", QString::SkipEmptyParts);
     qreal defLong, defLatitude;
     bool okX = false, okY = false;
@@ -1043,8 +1051,18 @@ QPointF ConvertAtype::coordinateFromStr(const QString &s, bool &ok)
         return QPointF(defLong, defLatitude);
     }
     ok = false;
-    return QPointF(46.6860,32.5060);//chornobajivka 0,0);
+    return defPoint;
 }
+
+QString ConvertAtype::coordinateToStrExt(const QPointF &coordinate, const QPointF &defPoint)
+{
+    const QString s = coordinateToStr(coordinate);
+    if(s.isEmpty())
+        return coordinateToStr(defPoint);
+    return s;
+}
+
+//-------------------------------------------------------------------------------
 
 QString ConvertAtype::coordinateToStr(const QPointF &coordinate)
 {
@@ -1057,6 +1075,8 @@ QString ConvertAtype::coordinateToStr(const QPointF &coordinate)
             .arg(QString::number(coordinate.x(), 'f', 6))
             .arg(QString::number(coordinate.y(), 'f', 6));
 }
+
+//-------------------------------------------------------------------------------
 
 QStringList ConvertAtype::replaceKeyInList(const QStringList &listIp, const QString &key, const QString &addIp)
 {
@@ -1073,11 +1093,15 @@ QStringList ConvertAtype::replaceKeyInList(const QStringList &listIp, const QStr
     return s.split("\n", QString::SkipEmptyParts);
 }
 
+//-------------------------------------------------------------------------------
+
 QStringList ConvertAtype::replaceKeyInList(const QStringList &listIpSource, const QString &key, const QStringList &addList)
 {
     return replaceKeyInList(listIpSource, key, addList.join("\n"));
 
 }
+
+//-------------------------------------------------------------------------------
 
 int ConvertAtype::daliPwr2linearPercents(const int &daliPwrPercents)
 {
@@ -1096,6 +1120,8 @@ int ConvertAtype::daliPwr2linearPercents(const int &daliPwrPercents)
     return 0;
 
 }
+
+//-------------------------------------------------------------------------------
 
 qreal ConvertAtype::linearPwr2daliPwr(const int &linearPower, const qreal &refpower)
 {

@@ -496,7 +496,7 @@ QString PrettyValues::prettyLongTextView(QString s)
     //former prettyTxtView
     s = s.remove(" ");
     QString r = s.right(4);
-    s.chop(3);
+    s.chop(4);
 
     while(!s.isEmpty()){
         r.prepend(s.right(4) + " ");

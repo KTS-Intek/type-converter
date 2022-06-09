@@ -186,6 +186,10 @@ public:
     //fireflyhelper.h
     static QPointF coordinateFromStr(const QString &s, bool &ok);
 
+    static QPointF coordinateFromStrExt(const QString &s, const QPointF &defPoint, bool &ok);
+
+    static QString coordinateToStrExt(const QPointF &coordinate, const QPointF &defPoint);
+
     static QString coordinateToStr(const QPointF &coordinate);
 
 
