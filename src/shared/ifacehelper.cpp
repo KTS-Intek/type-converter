@@ -28,10 +28,12 @@ QString IfaceHelper::convertByteArr2asciiStr(const QByteArray &arr, const bool o
 IfaceHelper::IffaceLogOut IfaceHelper::getIffaceLogOut(const QTime &time, const QByteArray &arr, const QString &ifaceName, const bool &isRead)
 {
     IffaceLogOut iface;
-    const QString currenttime = time.toString("hh:mm:ss.zzz");
+    const QString currenttime = time.isValid() ? time.toString("hh:mm:ss.zzz") : "";
+
+    const int emptySpace = currenttime.size() + 1;
 
     const QString mask = ifaceName + QString( isRead ? " > " : " < " );
-    const QString emptyMask = QString("").rightJustified(mask.length() + 13, ' ');
+    const QString emptyMask = QString("").rightJustified(mask.length() + emptySpace, ' ');
 
     const QString instr = convertByteArr2asciiStr(arr, false) ;
 

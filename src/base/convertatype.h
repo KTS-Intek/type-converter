@@ -211,6 +211,13 @@ public:
 
     static QList<quint8> convertNumber2uint8list(const quint64 &number, const int &byteslen);
 
+    static QString getTextFromHash(const QVariantHash &h);
+
+    static QString getTextFromMap(const QVariantMap &map);
+
+    static QString getTextFromList(const QVariantList &l);
+
+    static QString getTextByType(const QVariant &v);
 
 };
 

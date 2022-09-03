@@ -126,7 +126,13 @@ QString ValueValidator::validateCoordinates(const QString &instr, bool &ok)
         ok = true;
         return s;
     }
-    const QStringList l = s.split(",", QString::SkipEmptyParts);
+    const QStringList l = s.split(",",
+                              #if QT_VERSION >= 0x050900
+                                  Qt::SkipEmptyParts
+                              #else
+                                  QString::SkipEmptyParts
+                              #endif
+                                  );
     s.clear();
     if(l.size() == 2){
         bool oklat ,oklon;

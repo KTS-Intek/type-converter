@@ -3,8 +3,8 @@
 # DEFINES += DONOTINCLUDEIFACEPROCESSOR   - disables iface converters
 
 INCLUDEPATH  += $$PWD\
-                $$PWD/../../defines/defines\
-                $$PWD/../../defines/define-types\
+                $$PWD/../../defines/defines \
+                $$PWD/../../defines/define-types \
                 $$PWD/../../defines/define-matilda-bbb
 
 

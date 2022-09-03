@@ -15,6 +15,10 @@
 #define GSM_BAND_UMTS_8         0x0100 //UMTS Band 8 (900 MHz)
 #define GSM_BAND_UMTS_9         0x0200 //UMTS Band 9 (800 MHz)
 
+#define GSM_BAND_LTE_X          0xFFFE //
+#define GSM_BAND_CDMA_X         0xFFFD //
+
+
 #define GSM_EVENT_LOW_BALANCE   0
 #define GSM_EVENT_WAS_CHARGED   1
 

@@ -208,7 +208,13 @@ QVariantList ConvertAtype::fromListHash(const QList<QVariantHash> &indata)
 
 QStringList ConvertAtype::dowFromString(const QString &s, bool &afterCorrection)
 {
-    return dowFromStringList(s.split(",", QString::SkipEmptyParts), afterCorrection);
+    return dowFromStringList(s.split(",",
+                                 #if QT_VERSION >= 0x050900
+                                     Qt::SkipEmptyParts
+                                 #else
+                                     QString::SkipEmptyParts
+                                 #endif
+                                     ), afterCorrection);
 
 }
 
@@ -266,7 +272,13 @@ QTime ConvertAtype::timeFromString(const QString &s, const QTime &deftime, bool 
 QVariantHash ConvertAtype::line2hash(const QString &line, const QStringList &lk)
 {
     QVariantHash h;
-    const QStringList l = line.split(" ", QString::SkipEmptyParts);
+    const QStringList l = line.split(" ",
+                                 #if QT_VERSION >= 0x050900
+                                     Qt::SkipEmptyParts
+                                 #else
+                                     QString::SkipEmptyParts
+                                 #endif
+                                     );
 
     const int iMax = lk.size();
     const int iMax2 = l.size();
@@ -1037,7 +1049,13 @@ QPointF ConvertAtype::coordinateFromStr(const QString &s, bool &ok)
 
 QPointF ConvertAtype::coordinateFromStrExt(const QString &s, const QPointF &defPoint, bool &ok)
 {
-    QStringList l = s.split(",", QString::SkipEmptyParts);
+    QStringList l = s.split(",",
+                        #if QT_VERSION >= 0x050900
+                            Qt::SkipEmptyParts
+                        #else
+                            QString::SkipEmptyParts
+                        #endif
+                            );
     qreal defLong, defLatitude;
     bool okX = false, okY = false;
 
@@ -1090,7 +1108,13 @@ QStringList ConvertAtype::replaceKeyInList(const QStringList &listIp, const QStr
     }else{
         s.prepend(addIp + "\n");
     }
-    return s.split("\n", QString::SkipEmptyParts);
+    return s.split("\n",
+               #if QT_VERSION >= 0x050900
+                   Qt::SkipEmptyParts
+               #else
+                   QString::SkipEmptyParts
+               #endif
+                   );
 }
 
 //-------------------------------------------------------------------------------
@@ -1162,6 +1186,8 @@ QByteArray ConvertAtype::uint8list2array(const QList<quint8> &meterMessageList, 
     return arr;
 }
 
+//-------------------------------------------------------------------------------
+
 QList<quint8> ConvertAtype::convertArray2uint8list(const QByteArray &arr)
 {
     QList<quint8> l;
@@ -1180,6 +1206,86 @@ QList<quint8> ConvertAtype::convertNumber2uint8list(const quint64 &number, const
 
     arr = QByteArray::fromHex(arr);
     return convertArray2uint8list(arr);
+}
+
+//-------------------------------------------------------------------------------
+
+QString ConvertAtype::getTextFromHash(const QVariantHash &h)
+{
+    auto lk = h.keys();
+    std::sort(lk.begin(), lk.end());
+
+    QStringList out;
+
+    for(int i = 0, imax = lk.size(); i < imax; i++){
+        out.append(QString("%1 : %2").arg(lk.at(i)).arg(getTextByType(h.value(lk.at(i)))));
+    }
+
+    return out.join("\n");
+}
+
+//-------------------------------------------------------------------------------
+
+QString ConvertAtype::getTextFromMap(const QVariantMap &map)
+{
+    auto lk = map.keys();
+    std::sort(lk.begin(), lk.end());
+
+    QStringList out;
+
+    for(int i = 0, imax = lk.size(); i < imax; i++){
+        out.append(QString("%1 : %2").arg(lk.at(i)).arg(getTextByType(map.value(lk.at(i)))));
+    }
+
+    return out.join("\n");
+}
+
+//-------------------------------------------------------------------------------
+
+QString ConvertAtype::getTextFromList(const QVariantList &l)
+{
+    QStringList out;
+
+    for(int i = 0, imax = l.size(); i < imax; i++){
+        const QString line = getTextByType(l.at(i));
+        if(line.isEmpty())
+            continue;
+        out.append(line);
+    }
+    return out.join("\n");
+}
+
+//-------------------------------------------------------------------------------
+
+QString ConvertAtype::getTextByType(const QVariant &v)
+{
+    if(v.type() == QVariant::Hash){
+        return getTextFromHash(v.toHash());
+    }
+
+    if(v.type() == QVariant::List ){
+        return getTextFromList(v.toList());
+
+    }
+
+    if(v.type() == QVariant::ByteArray){
+        return v.toString();
+
+    }
+
+    if(v.type() == QVariant::Map){
+        return getTextFromMap(v.toMap());
+    }
+
+    if(v.type() == QVariant::StringList){
+        return v.toStringList().join("\n");
+    }
+
+    if(v.type() == QVariant::String){
+        return v.toString();
+    }
+
+    return QString("Unknown data type %1, data %2").arg(int(v.type())).arg(v.toString());
 }
 
 //-------------------------------------------------------------------------------

@@ -98,9 +98,9 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 //        QMap<QString,QString> ip2iface;
 
 //        if(true){
-//            const QStringList routenl = routen.split("\n", QString::SkipEmptyParts);
+//            const QStringList routenl = routen.split("\n", Qt::SkipEmptyParts);
 //            for(int i = 2, imax = routenl.size(); i < imax; i++){
-//                const QStringList oner = routenl.at(i).split(" ", QString::SkipEmptyParts);
+//                const QStringList oner = routenl.at(i).split(" ", Qt::SkipEmptyParts);
 //                if(oner.isEmpty())
 //                    continue;
 //                ip2iface.insert(oner.first(), oner.last());

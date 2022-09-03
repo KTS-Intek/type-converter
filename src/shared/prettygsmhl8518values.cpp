@@ -41,6 +41,11 @@ QString PrettyGsmHL8518values::getBandName(const quint32 &kbnd)
     case GSM_BAND_UMTS_6        : bandName = "UMTS Band 6 (800 MHz)"    ; break;
     case GSM_BAND_UMTS_8        : bandName = "UMTS Band 8 (900 MHz)"    ; break;
     case GSM_BAND_UMTS_9        : bandName = "UMTS Band 9 (800 MHz)"    ; break;
+
+
+case GSM_BAND_LTE_X    : bandName = "LTE"; break;//      0xFFFE //
+case GSM_BAND_CDMA_X   : bandName = "CDMA"; break;//      0xFFFD //
+
         //    default: bandName = readStr.simplified().trimmed(); break;
     }
     return bandName;
@@ -79,7 +84,7 @@ QString PrettyGsmHL8518values::getCregName(const int &val)
 
 QString PrettyGsmHL8518values::getHumanReadableRssi(const int &csqrssi)
 {
-    return (csqrssi == 99) ? "-" : QString("%1 dBm").arg((csqrssi * 2) - 113 );
+    return (csqrssi == 99 || csqrssi == 0) ? "-" : QString("%1 dBm").arg((csqrssi * 2) - 113 );
 }
 
 //------------------------------------------------------------------------------------
@@ -164,7 +169,13 @@ AT_COPS PrettyGsmHL8518values::decodeCops(const QString &readStr, const bool &ig
     if(readStr.left(7) != "+COPS: ")
         return result;
 
-    QStringList l = readStr.mid(7).simplified().trimmed().split(",", QString::SkipEmptyParts);
+    QStringList l = readStr.mid(7).simplified().trimmed().split(",",
+                                                            #if QT_VERSION >= 0x050900
+                                                                Qt::SkipEmptyParts
+                                                            #else
+                                                                QString::SkipEmptyParts
+                                                            #endif
+                                                                );
     if(l.size() > 2){
         if(!ignoreCopsCheck && l.at(1).toInt() > 0)
             return AT_COPS(true);
@@ -181,7 +192,7 @@ AT_COPS PrettyGsmHL8518values::decodeCops(const QString &readStr, const bool &ig
             for(int i = 0, iMax = s.length(); i < iMax; i += 2){
                 if(s.mid(i,2) == "00")
                     continue;
-                arr.append(s.mid(i,2));
+                arr.append(s.mid(i,2).toLocal8Bit());
             }
             s = QByteArray::fromHex( arr ).simplified().trimmed();
 
@@ -233,7 +244,13 @@ AT_CREG PrettyGsmHL8518values::decodeCreg(const QString &readStr)
     if(readStr.left(7) != "+CREG: ")
         return result;
 
-    QStringList l = readStr.mid(7).simplified().trimmed().split(",", QString::SkipEmptyParts);
+    QStringList l = readStr.mid(7).simplified().trimmed().split(",",
+                                                            #if QT_VERSION >= 0x050900
+                                                                Qt::SkipEmptyParts
+                                                            #else
+                                                                QString::SkipEmptyParts
+                                                            #endif
+                                                                );
     int s = l.size();
 
     int val = 0;
@@ -294,7 +311,13 @@ AT_CSQ PrettyGsmHL8518values::decodeCsqCommand(const QString &leftAnswr, const Q
         return result;
 
 
-    const QStringList l = readStr.split(",", QString::SkipEmptyParts);
+    const QStringList l = readStr.split(",",
+                                    #if QT_VERSION >= 0x050900
+                                        Qt::SkipEmptyParts
+                                    #else
+                                        QString::SkipEmptyParts
+                                    #endif
+                                        );
     if(verboseMode)
         qDebug() << "decodeCsqCommand l size " << l.size() << l;
     if(l.size() == 3 || l.size() == 2){
