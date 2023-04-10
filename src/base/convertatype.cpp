@@ -209,7 +209,7 @@ QVariantList ConvertAtype::fromListHash(const QList<QVariantHash> &indata)
 QStringList ConvertAtype::dowFromString(const QString &s, bool &afterCorrection)
 {
     return dowFromStringList(s.split(",",
-                                 #if QT_VERSION >= 0x050900
+                                 #if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
                                      Qt::SkipEmptyParts
                                  #else
                                      QString::SkipEmptyParts
@@ -273,7 +273,7 @@ QVariantHash ConvertAtype::line2hash(const QString &line, const QStringList &lk)
 {
     QVariantHash h;
     const QStringList l = line.split(" ",
-                                 #if QT_VERSION >= 0x050900
+                                 #if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
                                      Qt::SkipEmptyParts
                                  #else
                                      QString::SkipEmptyParts
@@ -1050,7 +1050,7 @@ QPointF ConvertAtype::coordinateFromStr(const QString &s, bool &ok)
 QPointF ConvertAtype::coordinateFromStrExt(const QString &s, const QPointF &defPoint, bool &ok)
 {
     QStringList l = s.split(",",
-                        #if QT_VERSION >= 0x050900
+                        #if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
                             Qt::SkipEmptyParts
                         #else
                             QString::SkipEmptyParts
@@ -1109,7 +1109,7 @@ QStringList ConvertAtype::replaceKeyInList(const QStringList &listIp, const QStr
         s.prepend(addIp + "\n");
     }
     return s.split("\n",
-               #if QT_VERSION >= 0x050900
+               #if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
                    Qt::SkipEmptyParts
                #else
                    QString::SkipEmptyParts

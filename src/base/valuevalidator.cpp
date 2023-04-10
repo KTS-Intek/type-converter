@@ -127,7 +127,7 @@ QString ValueValidator::validateCoordinates(const QString &instr, bool &ok)
         return s;
     }
     const QStringList l = s.split(",",
-                              #if QT_VERSION >= 0x050900
+                              #if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
                                   Qt::SkipEmptyParts
                               #else
                                   QString::SkipEmptyParts

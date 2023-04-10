@@ -170,7 +170,7 @@ AT_COPS PrettyGsmHL8518values::decodeCops(const QString &readStr, const bool &ig
         return result;
 
     QStringList l = readStr.mid(7).simplified().trimmed().split(",",
-                                                            #if QT_VERSION >= 0x050900
+                                                            #if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
                                                                 Qt::SkipEmptyParts
                                                             #else
                                                                 QString::SkipEmptyParts
@@ -245,7 +245,7 @@ AT_CREG PrettyGsmHL8518values::decodeCreg(const QString &readStr)
         return result;
 
     QStringList l = readStr.mid(7).simplified().trimmed().split(",",
-                                                            #if QT_VERSION >= 0x050900
+                                                            #if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
                                                                 Qt::SkipEmptyParts
                                                             #else
                                                                 QString::SkipEmptyParts
@@ -312,7 +312,7 @@ AT_CSQ PrettyGsmHL8518values::decodeCsqCommand(const QString &leftAnswr, const Q
 
 
     const QStringList l = readStr.split(",",
-                                    #if QT_VERSION >= 0x050900
+                                    #if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
                                         Qt::SkipEmptyParts
                                     #else
                                         QString::SkipEmptyParts

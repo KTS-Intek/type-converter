@@ -8,7 +8,7 @@ EmbeeDefaultReadCommandList::EmbeeDefaultReadCommandList(QObject *parent) : QObj
 QStringList EmbeeDefaultReadCommandList::getDefaultReadCommandList()
 {
     return QString("ATAD ATBD ATCH ATID ATNI ATSH ATSL ATVR ATHV ATHP ATC0 ATAP ATRN ATCP0").split(" ",
-                                                                                               #if QT_VERSION >= 0x050900
+                                                                                               #if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
                                                                                                    Qt::SkipEmptyParts
                                                                                                #else
                                                                                                    QString::SkipEmptyParts
