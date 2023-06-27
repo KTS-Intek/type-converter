@@ -29,6 +29,9 @@ public:
 
     static IPadd2ifaceName ipAddrVsIfaceName();
 
+    static IPadd2ifaceName ipAddrVsIfaceNameExt(const bool &ignoreP2P);
+
+
     static QStringList getTcpMacIP();
 
     static QStringList getIpList(const bool &ignoreLoopBack);

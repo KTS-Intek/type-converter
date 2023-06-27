@@ -257,6 +257,13 @@ bool MacAddressHelper::hasActiveOutConn(const bool &verboseMode)
 
 IPadd2ifaceName MacAddressHelper::ipAddrVsIfaceName()
 {
+    return ipAddrVsIfaceNameExt(true);
+}
+
+//--------------------------------------------------------------------------------------------
+
+IPadd2ifaceName MacAddressHelper::ipAddrVsIfaceNameExt(const bool &ignoreP2P)
+{
     QStringList listIp, listIfaceName;
 
     const QList<QNetworkInterface> listIface = QNetworkInterface::allInterfaces();
@@ -267,7 +274,12 @@ IPadd2ifaceName MacAddressHelper::ipAddrVsIfaceName()
             if(listIface.at(i).flags() & QNetworkInterface::IsLoopBack )
                 continue;
 
-            if(isMacGood(listIface.at(i).hardwareAddress()) && (!listIface.at(i).hardwareAddress().isEmpty() || (listIface.at(i).flags() & QNetworkInterface::IsPointToPoint))){
+            const bool goodRegularIface = isMacGood(listIface.at(i).hardwareAddress()) &&
+                    (!listIface.at(i).hardwareAddress().isEmpty() || (listIface.at(i).flags() & QNetworkInterface::IsPointToPoint));
+
+            const bool goodP2PIface =  (listIface.at(i).flags() & QNetworkInterface::IsPointToPoint);
+
+            if(goodRegularIface || (!ignoreP2P && goodP2PIface)){
 
                 const QList<QNetworkAddressEntry> l = listIface.at(i).addressEntries();
 
