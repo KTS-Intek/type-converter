@@ -33,6 +33,10 @@ public:
 
     static bool isIpGood(const QString &ip, const QStringList &allowlist);
 
+    static QStringList fromETSFile(const QString &lines);
+
+    static QString toETSFile(const QStringList &params, const QString &description);
+
 
 };
 

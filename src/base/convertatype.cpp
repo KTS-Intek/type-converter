@@ -8,7 +8,7 @@
 #include "prettyvalues.h"
 
 #include <QtMath>
-
+#include <QDataStream>
 
 //-------------------------------------------------------------------------------
 
@@ -918,8 +918,23 @@ QString ConvertAtype::varHash2str(const QVariantHash &h, const bool ignoreEmpty)
     std::sort(lk.begin(), lk.end());
     QStringList l;
     for(int i = 0, iMax = lk.size(); i < iMax; i++){
-        if(ignoreEmpty && h.value(lk.at(i)).toString().isEmpty())
+        if(h.value(lk.at(i)).toString().isEmpty()){
+            if(ignoreEmpty || h.value(lk.at(i)).isNull())
+                continue;
+
+
+            QByteArray arr;
+            if(true){
+                QDataStream stream(&arr, QIODevice::WriteOnly);
+                stream << h.value(lk.at(i));
+            }
+            l.append(QString("%1=%2,len=%3").arg(lk.at(i)).arg(QString(h.value(lk.at(i)).typeName())).arg(arr.length()));
+
             continue;
+
+
+        }
+
         l.append(QString("%1=%2").arg(lk.at(i)).arg(h.value(lk.at(i)).toString()));
     }
     return l.join("\n");

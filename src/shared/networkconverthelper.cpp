@@ -1,6 +1,8 @@
 #include "networkconverthelper.h"
 #include <QUrl>
 #include <QRegularExpression>
+#include <QDateTime>
+#include <QSysInfo>
 
 
 QString NetworkConvertHelper::showNormalIP(const QHostAddress &hAddr){ return showNormalIP(hAddr.toString()); }
@@ -140,6 +142,121 @@ bool NetworkConvertHelper::isIpGood(const QString &ip, const QStringList &allowl
 
     }
     return false;
+}
+
+//-------------------------------------------------------------------------
+
+QStringList NetworkConvertHelper::fromETSFile(const QString &lines)
+{
+    // 0x - hex, or dec
+//    DESCRIPTION Sniffer__Fri_Aug_2_2013_10_17_29
+//    CHANNEL_FINAL 0x18
+//    ID_FINAL 0x80B
+//    KEY_FINAL f
+    const QStringList l =  QString(lines).replace("\r\n", "\n").replace("\r", "\n").split("\n",
+                                                                                      #if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
+                                                                                          Qt::SkipEmptyParts
+                                                                                      #else
+                                                                                          QString::SkipEmptyParts
+                                                                                      #endif
+                                                                                          );
+
+    QStringList params;
+
+    if(l.size() > 3 && l.at(0).startsWith("DESCRIPTION ")
+            && l.at(1).startsWith("CHANNEL_FINAL ")
+            && l.at(2).startsWith("ID_FINAL ")
+            && (l.at(3).startsWith("KEY_FINAL ") )){ //|| l.at(3).startsWith("KEY_CRYPTO "))){
+
+        QString ch, id, ky;
+
+
+        QStringList ll = l.at(1).split(" ",
+                               #if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
+                                   Qt::SkipEmptyParts
+                               #else
+                                   QString::SkipEmptyParts
+                               #endif
+                                   );
+        if(ll.size() > 1)
+            ch = ll.at(1).simplified().trimmed();
+
+        ll = l.at(2).split(" ",
+                   #if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
+                       Qt::SkipEmptyParts
+                   #else
+                       QString::SkipEmptyParts
+                   #endif
+                       );
+        if(ll.size() > 1)
+            id = ll.at(1).simplified().trimmed();
+
+
+        ll = l.at(3).split(" ",
+                   #if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
+                       Qt::SkipEmptyParts
+                   #else
+                       QString::SkipEmptyParts
+                   #endif
+                       );
+        if(ll.size() > 1)
+            ky = ll.at(1).simplified().trimmed();
+
+        //        if(l.at(3).startsWith("KEY_CRYPTO ")){
+        //            ky = cryptoF(ky,0,1);
+        //            if(ky == "ERROR")
+        //                ky.clear();
+        //        }
+
+
+        bool okCh, okId;
+        int channel = ch.toInt(&okCh);
+        int netid = id.toInt(&okId);
+
+        if(!okCh)
+            channel = ch.toInt(&okCh,16);
+        if(!okId)
+            netid = id.toInt(&okId, 16);
+
+        if(channel > 10 && channel < 27 && netid >= 0 && netid <= 0x3FFF && okCh && okId){
+            params.append(QString::number(channel));
+            params.append(QString::number(netid));
+            params.append(ky);
+
+
+        }
+
+    }
+
+    return params;
+}
+
+//-------------------------------------------------------------------------
+
+QString NetworkConvertHelper::toETSFile(const QStringList &params, const QString &description)
+{
+//    out.append(QString::number(v.channel));
+//    out.append(QString::number(v.id));
+//    out.append(v.key);
+
+
+
+    if(params.size() < 3)
+        return QString();
+
+    QStringList list;
+
+    list.append(QString("DESCRIPTION %1 %2 %3 %4")
+                .arg(description)
+                .arg(QDateTime::currentDateTime().toString("yyyy/MM/dd hh:mm:ss"))
+                .arg(QSysInfo::machineHostName())
+                .arg(QSysInfo::prettyProductName()).simplified().trimmed());
+
+    list.append(QString("CHANNEL_FINAL 0x%1").arg(QString::number(params.at(0).toInt(), 16).toUpper()));
+    list.append(QString("ID_FINAL 0x%1").arg(QString::number(params.at(1).toInt(), 16).toUpper() ));
+    list.append(QString("KEY_FINAL %1").arg(QString(params.at(2)).simplified().trimmed()));
+
+    return list.join("\r\n");
 }
 
 
